@@ -51,11 +51,6 @@ export const routes: Routes = [
             (m) => m.WeeklySummaryComponent
           ),
       },
-      {
-        path: 'admin/seed',
-        loadComponent: () =>
-          import('./data/seed-runner').then((m) => m.SeedRunnerComponent),
-      },
     ],
   },
 ];
