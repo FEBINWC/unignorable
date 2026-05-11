@@ -1,0 +1,21 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": true,
+    "schedule": {
+      "$date": {
+        "tasks": {
+          "$taskId": {
+            ".indexOn": ["type", "status", "subject"]
+          }
+        }
+      }
+    },
+    "deadlines": {
+      ".indexOn": ["date", "type"]
+    },
+    "weeklyReports": {
+      ".indexOn": ["weekStart"]
+    }
+  }
+}
