@@ -67,8 +67,85 @@ import { CountdownPipe } from '../../shared/pipes/countdown.pipe';
         </div>
       }
 
-      @for (task of tasks(); track task.id) {
-        <app-task-card [task]="task" [dayOrderNum]="progress()?.currentDayOrder || 1"></app-task-card>
+      <!-- Block 1: Exam (9:00 AM - 12:30 PM) -->
+      @if (examTasks().length > 0) {
+        <div class="mb-5 rounded-xl border border-blue-200 bg-white overflow-hidden">
+          <div class="flex items-center gap-3 bg-blue-50 px-4 py-3 border-b border-blue-200">
+            <i class="mdi mdi-school text-xl text-exam"></i>
+            <div>
+              <h3 class="font-semibold text-exam">Exam Block</h3>
+              <p class="text-xs text-gray-500">9:00 AM — 12:30 PM (3.5 hrs)</p>
+            </div>
+            <div class="ml-auto flex items-center gap-1.5 rounded-full bg-blue-100 px-2.5 py-1 text-xs font-medium text-blue-700">
+              <i class="mdi mdi-clock-outline text-sm"></i> 9:00 — 12:30
+            </div>
+          </div>
+          <div class="p-4">
+            @for (task of examTasks(); track task.id) {
+              <app-task-card [task]="task" [dayOrderNum]="progress()?.currentDayOrder || 1"></app-task-card>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Break indicator -->
+      @if (examTasks().length > 0 && salesTasks().length > 0) {
+        <div class="mb-5 flex items-center gap-3 px-4 text-xs text-gray-400">
+          <div class="flex-1 border-t border-dashed border-gray-300"></div>
+          <span><i class="mdi mdi-food"></i> Lunch Break &middot; 12:30 — 1:30 PM</span>
+          <div class="flex-1 border-t border-dashed border-gray-300"></div>
+        </div>
+      }
+
+      <!-- Block 2: Sales (1:30 PM - 4:00 PM) -->
+      @if (salesTasks().length > 0) {
+        <div class="mb-5 rounded-xl border border-green-200 bg-white overflow-hidden">
+          <div class="flex items-center gap-3 bg-green-50 px-4 py-3 border-b border-green-200">
+            <i class="mdi mdi-handshake text-xl text-sales"></i>
+            <div>
+              <h3 class="font-semibold text-sales">Sales Block</h3>
+              <p class="text-xs text-gray-500">1:30 PM — 4:00 PM (2.5 hrs)</p>
+            </div>
+            <div class="ml-auto flex items-center gap-1.5 rounded-full bg-green-100 px-2.5 py-1 text-xs font-medium text-green-700">
+              <i class="mdi mdi-clock-outline text-sm"></i> 1:30 — 4:00
+            </div>
+          </div>
+          <div class="p-4">
+            @for (task of salesTasks(); track task.id) {
+              <app-task-card [task]="task" [dayOrderNum]="progress()?.currentDayOrder || 1"></app-task-card>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Break indicator -->
+      @if (salesTasks().length > 0 && codingTasks().length > 0) {
+        <div class="mb-5 flex items-center gap-3 px-4 text-xs text-gray-400">
+          <div class="flex-1 border-t border-dashed border-gray-300"></div>
+          <span><i class="mdi mdi-coffee"></i> Break &middot; 4:00 — 4:15 PM</span>
+          <div class="flex-1 border-t border-dashed border-gray-300"></div>
+        </div>
+      }
+
+      <!-- Block 3: Coding (4:15 PM - 7:00 PM) -->
+      @if (codingTasks().length > 0) {
+        <div class="mb-5 rounded-xl border border-purple-200 bg-white overflow-hidden">
+          <div class="flex items-center gap-3 bg-purple-50 px-4 py-3 border-b border-purple-200">
+            <i class="mdi mdi-code-tags text-xl text-coding"></i>
+            <div>
+              <h3 class="font-semibold text-coding">Coding Block</h3>
+              <p class="text-xs text-gray-500">4:15 PM — 7:00 PM (2.75 hrs)</p>
+            </div>
+            <div class="ml-auto flex items-center gap-1.5 rounded-full bg-purple-100 px-2.5 py-1 text-xs font-medium text-purple-700">
+              <i class="mdi mdi-clock-outline text-sm"></i> 4:15 — 7:00
+            </div>
+          </div>
+          <div class="p-4">
+            @for (task of codingTasks(); track task.id) {
+              <app-task-card [task]="task" [dayOrderNum]="progress()?.currentDayOrder || 1"></app-task-card>
+            }
+          </div>
+        </div>
       }
 
       <!-- Complete Day Order button (Febin view, all submitted) -->
@@ -95,6 +172,9 @@ export class DashboardComponent implements OnInit {
   progress = signal<Progress | null>(null);
   deadlines = signal<Deadline[]>([]);
 
+  examTasks = computed(() => this.tasks().filter((t) => t.type === 'exam'));
+  salesTasks = computed(() => this.tasks().filter((t) => t.type === 'sales'));
+  codingTasks = computed(() => this.tasks().filter((t) => t.type === 'coding'));
   pendingReviewCount = computed(() => this.tasks().filter((t) => t.status === 'submitted').length);
   allSubmitted = computed(() => this.tasks().length > 0 && this.tasks().every((t) => t.status === 'submitted' || t.status === 'reviewed'));
   nextDeadline = computed(() => {
