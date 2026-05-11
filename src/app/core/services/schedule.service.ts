@@ -179,7 +179,7 @@ export class ScheduleService implements OnDestroy {
     [date: string]: DaySchedule;
   }): Promise<void> {
     const scheduleRef = ref(this.db, this.SCHEDULE_PATH);
-    await set(scheduleRef, data);
+    await update(scheduleRef, data);
   }
 
   async isScheduleSeeded(): Promise<boolean> {

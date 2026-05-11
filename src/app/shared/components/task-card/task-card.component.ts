@@ -1,202 +1,137 @@
 import { Component, inject, Input } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatBadgeModule } from '@angular/material/badge';
 import { Task } from '../../../core/models/task.model';
 import { ViewModeService } from '../../../core/services/view-mode.service';
 import { ScheduleService } from '../../../core/services/schedule.service';
 import { StreakService } from '../../../core/services/streak.service';
 import { FileUploadComponent } from '../file-upload/file-upload.component';
 
+const BORDER_COLORS: Record<string, string> = {
+  exam: 'border-l-exam',
+  sales: 'border-l-sales',
+  coding: 'border-l-coding',
+};
+
 @Component({
   selector: 'app-task-card',
   standalone: true,
-  imports: [
-    UpperCasePipe,
-    FormsModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    MatChipsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatBadgeModule,
-    FileUploadComponent,
-  ],
+  imports: [UpperCasePipe, FormsModule, FileUploadComponent],
   template: `
-    <mat-card [class]="'task-card type-' + task.type" [class.carry-over]="task.isCarryOver">
-      <mat-card-header>
-        <mat-card-title>
-          @if (task.isCarryOver) {
-            <mat-icon class="carry-over-icon" color="warn">replay</mat-icon>
-          }
-          {{ task.title }}
-        </mat-card-title>
-        <mat-card-subtitle>
-          <mat-chip-set>
-            <mat-chip [class]="'chip-' + task.type">{{ task.type | uppercase }}</mat-chip>
+    <div
+      class="mb-4 rounded-lg border border-gray-200 border-l-4 bg-white p-4 shadow-sm"
+      [class]="BORDER_COLORS[task.type] || ''"
+      [class.bg-orange-50]="task.isCarryOver"
+    >
+      <!-- Header -->
+      <div class="mb-2 flex items-start justify-between">
+        <div>
+          <h3 class="font-semibold text-gray-900">
+            @if (task.isCarryOver) {
+              <i class="mdi mdi-replay text-warning mr-1"></i>
+            }
+            {{ task.title }}
+          </h3>
+          <div class="mt-1 flex flex-wrap gap-1.5">
+            <span class="rounded-full px-2 py-0.5 text-xs font-medium"
+              [class]="task.type === 'exam' ? 'bg-blue-100 text-blue-700' : task.type === 'sales' ? 'bg-green-100 text-green-700' : 'bg-purple-100 text-purple-700'">
+              {{ task.type | uppercase }}
+            </span>
             @if (task.subject) {
-              <mat-chip>{{ task.subject }}</mat-chip>
+              <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{{ task.subject }}</span>
             }
             @if (task.examType) {
-              <mat-chip>{{ task.examType }}</mat-chip>
+              <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{{ task.examType }}</span>
             }
-            <mat-chip [class]="'status-' + task.status">{{ task.status }}</mat-chip>
-          </mat-chip-set>
-        </mat-card-subtitle>
-      </mat-card-header>
-
-      <mat-card-content>
-        <p class="description">{{ task.description }}</p>
-        @if (task.chapters) {
-          <p class="chapters"><strong>Chapters:</strong> {{ task.chapters }}</p>
-        }
-        @if (task.isCarryOver && task.carryOverFromDate) {
-          <p class="carry-over-info">Carried over from {{ task.carryOverFromDate }}</p>
-        }
-
-        <!-- Proof attachments -->
-        @if (task.proofUrls.length) {
-          <div class="proofs">
-            <strong>Proofs ({{ task.proofUrls.length }}):</strong>
-            <div class="proof-list">
-              @for (url of task.proofUrls; track url; let i = $index) {
-                <a [href]="url" target="_blank" class="proof-link">
-                  <mat-icon>attachment</mat-icon>
-                  File {{ i + 1 }}
-                </a>
-              }
-            </div>
+            <span class="rounded-full px-2 py-0.5 text-xs font-medium"
+              [class]="task.status === 'reviewed' ? 'bg-green-100 text-green-700' : task.status === 'submitted' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'">
+              {{ task.status }}
+            </span>
           </div>
-        }
+        </div>
+      </div>
 
-        <!-- Marks display -->
-        @if (task.marks !== null && task.marks !== undefined) {
-          <div class="marks-display" [class.pass]="task.marks >= 35" [class.fail]="task.marks < 35">
-            <strong>Score: {{ task.marks }}/100</strong>
+      <!-- Body -->
+      <p class="text-sm text-gray-600">{{ task.description }}</p>
+      @if (task.chapters) {
+        <p class="mt-1 text-sm"><strong>Chapters:</strong> {{ task.chapters }}</p>
+      }
+      @if (task.isCarryOver && task.carryOverFromDate) {
+        <p class="mt-1 text-xs text-orange-700">Carried over from {{ task.carryOverFromDate }}</p>
+      }
+
+      <!-- Proofs -->
+      @if (task.proofUrls.length) {
+        <div class="mt-3">
+          <strong class="text-sm">Proofs ({{ task.proofUrls.length }}):</strong>
+          <div class="mt-1 flex flex-wrap gap-2">
+            @for (url of task.proofUrls; track url; let i = $index) {
+              <a [href]="url" target="_blank" class="flex items-center gap-1 text-sm text-primary hover:underline">
+                <i class="mdi mdi-attachment"></i> File {{ i + 1 }}
+              </a>
+            }
           </div>
-        }
-        @if (task.feedback) {
-          <p class="feedback"><em>Feedback: {{ task.feedback }}</em></p>
-        }
+        </div>
+      }
 
-        <!-- FEBIN VIEW: Upload & Submit -->
-        @if (viewMode.viewMode() === 'febin' && task.status === 'pending') {
-          <app-file-upload
-            [date]="date"
-            [taskId]="task.id || ''"
-            (uploaded)="onFileUploaded($event)"
-          ></app-file-upload>
+      <!-- Score -->
+      @if (task.marks !== null && task.marks !== undefined) {
+        <div class="mt-3 inline-block rounded-md px-3 py-1.5 text-lg font-bold"
+          [class]="task.marks >= 35 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+          Score: {{ task.marks }}/100
+        </div>
+      }
+      @if (task.feedback) {
+        <p class="mt-1 text-sm italic text-gray-500">Feedback: {{ task.feedback }}</p>
+      }
+
+      <!-- Febin: Upload + Submit -->
+      @if (viewMode.viewMode() === 'febin' && task.status === 'pending') {
+        <div class="mt-4">
+          <app-file-upload [date]="date" [taskId]="task.id || ''" (uploaded)="onFileUploaded($event)"></app-file-upload>
           <button
-            mat-raised-button
-            color="primary"
-            class="submit-btn"
+            class="mt-3 flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark disabled:opacity-50"
             (click)="submitTask()"
             [disabled]="!task.proofUrls.length"
           >
-            <mat-icon>send</mat-icon>
-            Mark as Submitted
+            <i class="mdi mdi-send"></i> Mark as Submitted
           </button>
-        }
+        </div>
+      }
 
-        <!-- ABIN VIEW: Review -->
-        @if (viewMode.viewMode() === 'abin' && task.status === 'submitted') {
-          <div class="review-section">
-            <mat-form-field appearance="outline" class="marks-input">
-              <mat-label>Marks (0-100)</mat-label>
-              <input
-                matInput
-                type="number"
-                [(ngModel)]="reviewMarks"
-                min="0"
-                max="100"
-              />
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="feedback-input">
-              <mat-label>Feedback</mat-label>
-              <textarea matInput [(ngModel)]="reviewFeedback" rows="2"></textarea>
-            </mat-form-field>
-            <button mat-raised-button color="accent" (click)="submitReview()">
-              <mat-icon>check_circle</mat-icon>
-              Submit Review
-            </button>
+      <!-- Abin: Review -->
+      @if (viewMode.viewMode() === 'abin' && task.status === 'submitted') {
+        <div class="mt-4 flex flex-col gap-3 rounded-lg bg-gray-50 p-3">
+          <div>
+            <label class="mb-1 block text-sm font-medium text-gray-700">Marks (0-100)</label>
+            <input type="number" [(ngModel)]="reviewMarks" min="0" max="100"
+              class="w-32 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
           </div>
-        }
-
-        <!-- ABIN VIEW: Carry-over button for low scores -->
-        @if (viewMode.viewMode() === 'abin' && task.status === 'reviewed' && task.marks !== null && task.marks < 35) {
+          <div>
+            <label class="mb-1 block text-sm font-medium text-gray-700">Feedback</label>
+            <textarea [(ngModel)]="reviewFeedback" rows="2"
+              class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"></textarea>
+          </div>
           <button
-            mat-stroked-button
-            color="warn"
-            class="carry-over-btn"
-            (click)="triggerCarryOver()"
+            class="flex w-fit items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+            (click)="submitReview()"
           >
-            <mat-icon>replay</mat-icon>
-            Process Carry-Over
+            <i class="mdi mdi-check-circle"></i> Submit Review
           </button>
-        }
-      </mat-card-content>
-    </mat-card>
+        </div>
+      }
+
+      <!-- Abin: Carry-over for low scores -->
+      @if (viewMode.viewMode() === 'abin' && task.status === 'reviewed' && task.marks !== null && task.marks < 35) {
+        <button
+          class="mt-3 flex items-center gap-2 rounded-lg border border-warning px-4 py-2 text-sm font-medium text-warning hover:bg-warning/10"
+          (click)="triggerCarryOver()"
+        >
+          <i class="mdi mdi-replay"></i> Process Carry-Over
+        </button>
+      }
+    </div>
   `,
-  styles: [
-    `
-      .task-card {
-        margin-bottom: 16px;
-        border-left: 4px solid #ccc;
-      }
-      .type-exam { border-left-color: #1976d2; }
-      .type-sales { border-left-color: #388e3c; }
-      .type-coding { border-left-color: #7b1fa2; }
-      .carry-over {
-        background: #fff3e0;
-      }
-      .carry-over-icon { vertical-align: middle; margin-right: 4px; }
-      .carry-over-info { color: #e65100; font-size: 13px; }
-      .description { color: #555; margin: 8px 0; }
-      .chapters { color: #333; }
-      .proofs { margin: 12px 0; }
-      .proof-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-      .proof-link {
-        display: flex;
-        align-items: center;
-        gap: 2px;
-        color: #1976d2;
-        text-decoration: none;
-        font-size: 13px;
-      }
-      .marks-display {
-        font-size: 18px;
-        padding: 8px 12px;
-        border-radius: 6px;
-        display: inline-block;
-        margin: 8px 0;
-      }
-      .marks-display.pass { background: #e8f5e9; color: #2e7d32; }
-      .marks-display.fail { background: #ffebee; color: #c62828; }
-      .feedback { color: #666; font-size: 13px; }
-      .submit-btn { margin-top: 12px; }
-      .review-section {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        margin-top: 12px;
-      }
-      .marks-input { max-width: 180px; }
-      .carry-over-btn { margin-top: 8px; }
-      .chip-exam { --mdc-chip-elevated-container-color: #e3f2fd; }
-      .chip-sales { --mdc-chip-elevated-container-color: #e8f5e9; }
-      .chip-coding { --mdc-chip-elevated-container-color: #f3e5f5; }
-      .status-pending { --mdc-chip-elevated-container-color: #fff3e0; }
-      .status-submitted { --mdc-chip-elevated-container-color: #e3f2fd; }
-      .status-reviewed { --mdc-chip-elevated-container-color: #e8f5e9; }
-    `,
-  ],
 })
 export class TaskCardComponent {
   @Input() task!: Task;
@@ -206,40 +141,23 @@ export class TaskCardComponent {
   private scheduleService = inject(ScheduleService);
   private streakService = inject(StreakService);
 
-  reviewMarks: number = 0;
-  reviewFeedback: string = '';
+  BORDER_COLORS = BORDER_COLORS;
+  reviewMarks = 0;
+  reviewFeedback = '';
 
   async onFileUploaded(url: string): Promise<void> {
-    if (this.task.id) {
-      await this.scheduleService.addProofUrl(this.date, this.task.id, url);
-    }
+    if (this.task.id) await this.scheduleService.addProofUrl(this.date, this.task.id, url);
   }
-
   async submitTask(): Promise<void> {
     if (this.task.id) {
-      await this.scheduleService.updateTaskStatus(
-        this.date,
-        this.task.id,
-        'submitted'
-      );
+      await this.scheduleService.updateTaskStatus(this.date, this.task.id, 'submitted');
       await this.streakService.recalculateStreak();
     }
   }
-
   async submitReview(): Promise<void> {
-    if (this.task.id) {
-      await this.scheduleService.updateTaskMarks(
-        this.date,
-        this.task.id,
-        this.reviewMarks,
-        this.reviewFeedback
-      );
-    }
+    if (this.task.id) await this.scheduleService.updateTaskMarks(this.date, this.task.id, this.reviewMarks, this.reviewFeedback);
   }
-
   async triggerCarryOver(): Promise<void> {
-    if (this.task.id) {
-      await this.scheduleService.processCarryOver(this.date, this.task.id);
-    }
+    if (this.task.id) await this.scheduleService.processCarryOver(this.date, this.task.id);
   }
 }

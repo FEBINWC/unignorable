@@ -1,101 +1,92 @@
-import { Component, inject, signal } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { ScheduleService } from '../core/services/schedule.service';
-import { DeadlineService } from '../core/services/deadline.service';
+import { Component, inject, signal, NgZone } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { Database, ref, set, update, get } from '@angular/fire/database';
 import { generateFullSchedule } from './seed-schedule';
 import { SEED_DEADLINES } from './seed-deadlines';
+import { Deadline } from '../core/models/deadline.model';
 
 @Component({
   selector: 'app-seed-runner',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, MatIconModule, MatProgressBarModule],
+  imports: [RouterLink],
   template: `
-    <div class="seed-page">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>Database Seed Tool</mat-card-title>
-          <mat-card-subtitle>Populate Firebase with the 44-week study schedule</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          @if (status() === 'idle') {
-            <p>This will generate and upload the entire 44-week study plan to Firebase.</p>
-            <p><strong>Warning:</strong> This will overwrite any existing schedule data.</p>
-          }
-          @if (status() === 'checking') {
-            <p>Checking database...</p>
-            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-          }
-          @if (status() === 'exists') {
-            <p class="warning">Database already has schedule data. Seeding again will overwrite it.</p>
-          }
-          @if (status() === 'seeding') {
-            <p>Generating schedule and uploading to Firebase...</p>
-            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    <div class="mx-auto mt-10 max-w-xl">
+      <div class="rounded-lg border bg-white p-6 shadow-sm">
+        <h2 class="text-xl font-bold">Database Seed Tool</h2>
+        <p class="mb-4 text-sm text-gray-500">Populate Firebase with the 44-week study schedule</p>
+
+        @if (status() === 'idle') {
+          <p class="text-sm text-gray-600">This will generate and upload the entire 44-week study plan to Firebase.</p>
+          <p class="mt-1 text-sm font-medium text-gray-700">Warning: This will overwrite any existing schedule data.</p>
+        }
+        @if (status() === 'checking') {
+          <p class="text-sm text-gray-600">Checking database...</p>
+          <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-gray-200">
+            <div class="h-full animate-pulse rounded-full bg-primary" style="width: 50%"></div>
+          </div>
+        }
+        @if (status() === 'exists') {
+          <p class="text-sm font-medium text-warning-dark">Database already has schedule data. Seeding again will overwrite it.</p>
+        }
+        @if (status() === 'seeding') {
+          <p class="mb-2 text-sm text-gray-600">{{ seedProgress() }}</p>
+          <div class="h-2 w-full overflow-hidden rounded-full bg-gray-200">
+            <div class="h-full rounded-full bg-primary transition-all" [style.width.%]="seedPercent()"></div>
+          </div>
+        }
+        @if (status() === 'done') {
+          <div class="flex items-center gap-2 text-success">
+            <i class="mdi mdi-check-circle text-xl"></i>
+            <span class="font-medium">Seeding complete! {{ taskCount() }} tasks across {{ dayCount() }} days created.</span>
+          </div>
+        }
+        @if (status() === 'error') {
+          <div class="flex items-center gap-2 text-error">
+            <i class="mdi mdi-alert-circle text-xl"></i>
+            <span class="font-medium">Error: {{ errorMsg() }}</span>
+          </div>
+        }
+
+        <div class="mt-4 flex gap-3">
+          @if (status() === 'idle' || status() === 'exists') {
+            <button class="flex items-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50" (click)="checkDb()">
+              <i class="mdi mdi-magnify"></i> Check Database
+            </button>
+            <button class="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-dark" (click)="seed()">
+              <i class="mdi mdi-cloud-upload"></i> Seed Database
+            </button>
           }
           @if (status() === 'done') {
-            <p class="success">
-              <mat-icon>check_circle</mat-icon>
-              Seeding complete! {{ taskCount() }} tasks across {{ dayCount() }} days created.
-            </p>
+            <a routerLink="/dashboard" class="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-dark">
+              <i class="mdi mdi-view-dashboard"></i> Go to Dashboard
+            </a>
           }
           @if (status() === 'error') {
-            <p class="error">
-              <mat-icon>error</mat-icon>
-              Error: {{ errorMsg() }}
-            </p>
-          }
-        </mat-card-content>
-        <mat-card-actions>
-          @if (status() === 'idle' || status() === 'exists') {
-            <button mat-raised-button (click)="checkDb()">
-              <mat-icon>search</mat-icon>
-              Check Database
-            </button>
-            <button mat-raised-button color="primary" (click)="seed()">
-              <mat-icon>cloud_upload</mat-icon>
-              Seed Database
+            <button class="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-dark" (click)="status.set('idle')">
+              <i class="mdi mdi-refresh"></i> Try Again
             </button>
           }
-          @if (status() === 'done') {
-            <button mat-raised-button color="primary" routerLink="/dashboard">
-              <mat-icon>dashboard</mat-icon>
-              Go to Dashboard
-            </button>
-          }
-        </mat-card-actions>
-      </mat-card>
+        </div>
+      </div>
     </div>
   `,
-  styles: [
-    `
-      .seed-page {
-        max-width: 600px;
-        margin: 40px auto;
-      }
-      .warning { color: #e65100; }
-      .success { color: #2e7d32; display: flex; align-items: center; gap: 8px; }
-      .error { color: #c62828; display: flex; align-items: center; gap: 8px; }
-      mat-card-actions { display: flex; gap: 8px; padding: 16px; }
-    `,
-  ],
 })
 export class SeedRunnerComponent {
-  private scheduleService = inject(ScheduleService);
-  private deadlineService = inject(DeadlineService);
+  private db = inject(Database);
+  private zone = inject(NgZone);
 
   status = signal<'idle' | 'checking' | 'exists' | 'seeding' | 'done' | 'error'>('idle');
   taskCount = signal(0);
   dayCount = signal(0);
   errorMsg = signal('');
+  seedProgress = signal('Preparing...');
+  seedPercent = signal(0);
 
   async checkDb(): Promise<void> {
     this.status.set('checking');
     try {
-      const exists = await this.scheduleService.isScheduleSeeded();
-      this.status.set(exists ? 'exists' : 'idle');
+      const snapshot = await get(ref(this.db, 'schedule'));
+      this.status.set(snapshot.exists() ? 'exists' : 'idle');
     } catch (e: any) {
       this.status.set('error');
       this.errorMsg.set(e.message || 'Failed to check database');
@@ -103,28 +94,45 @@ export class SeedRunnerComponent {
   }
 
   async seed(): Promise<void> {
+    console.log('[Seed] Starting...');
     this.status.set('seeding');
+    this.seedProgress.set('Generating 44-week schedule...');
+    this.seedPercent.set(5);
     try {
-      // Generate schedule
       const schedule = generateFullSchedule();
       const days = Object.keys(schedule).length;
       let tasks = 0;
-      Object.values(schedule).forEach((day) => {
-        tasks += Object.keys(day.tasks).length;
-      });
+      Object.values(schedule).forEach((day) => { tasks += Object.keys(day.tasks).length; });
+      console.log(`[Seed] Generated ${days} days, ${tasks} tasks`);
+      this.seedProgress.set(`Uploading ${days} days to Firebase...`);
+      this.seedPercent.set(10);
 
-      // Upload schedule
-      await this.scheduleService.seedSchedule(schedule);
+      const dates = Object.keys(schedule).sort();
+      const chunkSize = 14;
+      const totalChunks = Math.ceil(dates.length / chunkSize);
+      for (let i = 0; i < totalChunks; i++) {
+        const start = i * chunkSize, end = Math.min(start + chunkSize, dates.length);
+        const chunk: Record<string, any> = {};
+        dates.slice(start, end).forEach((d) => { chunk[d] = schedule[d]; });
+        this.zone.run(() => {
+          this.seedProgress.set(`Uploading days ${start + 1}-${end} of ${dates.length}...`);
+          this.seedPercent.set(10 + Math.round((i / totalChunks) * 80));
+        });
+        console.log(`[Seed] Chunk ${i + 1}/${totalChunks}...`);
+        await update(ref(this.db, 'schedule'), chunk);
+      }
 
-      // Upload deadlines
-      await this.deadlineService.seedDeadlines(SEED_DEADLINES);
+      console.log('[Seed] Uploading deadlines...');
+      this.zone.run(() => { this.seedProgress.set('Uploading deadlines...'); this.seedPercent.set(95); });
+      const deadlinesData: Record<string, Omit<Deadline, 'id'>> = {};
+      SEED_DEADLINES.forEach((d, i) => { deadlinesData[`deadline_${i}`] = d; });
+      await set(ref(this.db, 'deadlines'), deadlinesData);
 
-      this.dayCount.set(days);
-      this.taskCount.set(tasks);
-      this.status.set('done');
+      console.log('[Seed] Complete!');
+      this.zone.run(() => { this.dayCount.set(days); this.taskCount.set(tasks); this.seedPercent.set(100); this.status.set('done'); });
     } catch (e: any) {
-      this.status.set('error');
-      this.errorMsg.set(e.message || 'Failed to seed database');
+      console.error('[Seed] Error:', e);
+      this.zone.run(() => { this.status.set('error'); this.errorMsg.set(e.message || 'Failed to seed database'); });
     }
   }
 }

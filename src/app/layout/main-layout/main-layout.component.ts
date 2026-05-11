@@ -1,135 +1,75 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { ViewToggleComponent } from '../../shared/components/view-toggle/view-toggle.component';
 import { ViewModeService } from '../../core/services/view-mode.service';
 
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [
-    RouterOutlet,
-    RouterLink,
-    RouterLinkActive,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatListModule,
-    MatIconModule,
-    MatButtonModule,
-    ViewToggleComponent,
-  ],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, ViewToggleComponent],
   template: `
-    <div class="layout-container">
-      <mat-toolbar color="primary" class="toolbar">
-        <button mat-icon-button (click)="sidenav.toggle()">
-          <mat-icon>menu</mat-icon>
-        </button>
-        <span class="title">NIOS Study Tracker</span>
-        <span class="spacer"></span>
-        <span class="mode-label">{{ viewMode.viewMode() === 'febin' ? 'Febin' : 'Abin' }}</span>
-        <app-view-toggle></app-view-toggle>
-      </mat-toolbar>
-
-      <mat-sidenav-container class="sidenav-container">
-        <mat-sidenav
-          #sidenav
-          [mode]="isMobile() ? 'over' : 'side'"
-          [opened]="!isMobile()"
-          class="sidenav"
+    <div class="flex h-screen flex-col">
+      <!-- Header -->
+      <header class="sticky top-0 z-50 flex items-center gap-3 bg-primary px-4 py-3 text-white shadow-md">
+        <button
+          class="rounded p-1 hover:bg-primary-dark lg:hidden"
+          (click)="sidebarOpen.set(!sidebarOpen())"
         >
-          <mat-nav-list>
+          <i class="mdi mdi-menu text-2xl"></i>
+        </button>
+        <span class="text-lg font-semibold">NIOS Study Tracker</span>
+        <span class="flex-1"></span>
+        <span class="hidden text-sm opacity-90 sm:inline">{{ viewMode.viewMode() === 'febin' ? 'Febin' : 'Abin' }}</span>
+        <app-view-toggle></app-view-toggle>
+      </header>
+
+      <div class="flex flex-1 overflow-hidden">
+        <!-- Sidebar backdrop (mobile) -->
+        @if (sidebarOpen()) {
+          <div
+            class="fixed inset-0 z-30 bg-black/40 lg:hidden"
+            (click)="sidebarOpen.set(false)"
+          ></div>
+        }
+
+        <!-- Sidebar -->
+        <nav
+          class="fixed left-0 top-14 z-40 h-[calc(100vh-3.5rem)] w-60 transform bg-white shadow-lg transition-transform duration-200 lg:static lg:translate-x-0 lg:shadow-none lg:border-r lg:border-gray-200"
+          [class.-translate-x-full]="!sidebarOpen()"
+          [class.translate-x-0]="sidebarOpen()"
+        >
+          <div class="flex flex-col gap-1 p-3">
             @for (item of navItems; track item.route) {
               <a
-                mat-list-item
                 [routerLink]="item.route"
-                routerLinkActive="active-link"
-                (click)="isMobile() && sidenav.close()"
+                routerLinkActive="bg-primary/10 text-primary font-semibold"
+                class="flex items-center gap-3 rounded-lg px-4 py-2.5 text-gray-700 transition-colors hover:bg-gray-100"
+                (click)="sidebarOpen.set(false)"
               >
-                <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
-                <span matListItemTitle>{{ item.label }}</span>
+                <i class="mdi mdi-{{ item.icon }} text-xl"></i>
+                <span>{{ item.label }}</span>
               </a>
             }
-          </mat-nav-list>
-        </mat-sidenav>
+          </div>
+        </nav>
 
-        <mat-sidenav-content class="content">
+        <!-- Main content -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-6">
           <router-outlet></router-outlet>
-        </mat-sidenav-content>
-      </mat-sidenav-container>
+        </main>
+      </div>
     </div>
   `,
-  styles: [
-    `
-      .layout-container {
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-      }
-      .toolbar {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-      }
-      .title {
-        margin-left: 8px;
-        font-size: 18px;
-        font-weight: 500;
-      }
-      .spacer {
-        flex: 1;
-      }
-      .mode-label {
-        font-size: 14px;
-        margin-right: 8px;
-        opacity: 0.9;
-      }
-      .sidenav-container {
-        flex: 1;
-      }
-      .sidenav {
-        width: 240px;
-      }
-      .content {
-        padding: 24px;
-      }
-      .active-link {
-        background: rgba(25, 118, 210, 0.08);
-      }
-      @media (max-width: 768px) {
-        .content {
-          padding: 12px;
-        }
-        .title {
-          font-size: 16px;
-        }
-        .mode-label {
-          display: none;
-        }
-      }
-    `,
-  ],
 })
-export class MainLayoutComponent implements OnInit {
+export class MainLayoutComponent {
   viewMode = inject(ViewModeService);
-  private breakpointObserver = inject(BreakpointObserver);
-  isMobile = signal(false);
-
-  ngOnInit(): void {
-    this.breakpointObserver
-      .observe([Breakpoints.Handset])
-      .subscribe((result) => this.isMobile.set(result.matches));
-  }
+  sidebarOpen = signal(false);
 
   navItems = [
-    { route: '/dashboard', icon: 'dashboard', label: 'Dashboard' },
-    { route: '/calendar', icon: 'calendar_month', label: 'Calendar' },
+    { route: '/dashboard', icon: 'view-dashboard', label: 'Dashboard' },
+    { route: '/calendar', icon: 'calendar-month', label: 'Calendar' },
     { route: '/deadlines', icon: 'flag', label: 'Deadlines' },
-    { route: '/trends', icon: 'trending_up', label: 'Score Trends' },
-    { route: '/weekly-summary', icon: 'summarize', label: 'Weekly Summary' },
+    { route: '/trends', icon: 'trending-up', label: 'Score Trends' },
+    { route: '/weekly-summary', icon: 'file-document-outline', label: 'Weekly Summary' },
   ];
 }
