@@ -10,7 +10,7 @@ import { ViewModeService } from '../../core/services/view-mode.service';
   template: `
     <div class="flex h-screen flex-col">
       <!-- Header -->
-      <header class="sticky top-0 z-50 flex items-center gap-3 bg-primary px-4 py-3 text-white shadow-md">
+      <header class="sticky top-0 z-50 flex items-center gap-3 bg-surface-dark border-b border-gray-800 px-4 py-3 text-white shadow-md">
         <button
           class="rounded p-1 hover:bg-primary-dark lg:hidden"
           (click)="sidebarOpen.set(!sidebarOpen())"
@@ -34,7 +34,7 @@ import { ViewModeService } from '../../core/services/view-mode.service';
 
         <!-- Sidebar -->
         <nav
-          class="fixed left-0 top-14 z-40 h-[calc(100vh-3.5rem)] w-60 transform bg-white shadow-lg transition-transform duration-200 lg:static lg:translate-x-0 lg:shadow-none lg:border-r lg:border-gray-200"
+          class="fixed left-0 top-14 z-40 h-[calc(100vh-3.5rem)] w-60 transform bg-surface shadow-lg transition-transform duration-200 lg:static lg:translate-x-0 lg:shadow-none lg:border-r lg:border-gray-800"
           [class.-translate-x-full]="!sidebarOpen()"
           [class.translate-x-0]="sidebarOpen()"
         >
@@ -43,8 +43,8 @@ import { ViewModeService } from '../../core/services/view-mode.service';
               @if (!item.parentOnly || viewMode.viewMode() === 'parent') {
                 <a
                   [routerLink]="item.route"
-                  routerLinkActive="bg-primary/10 text-primary font-semibold"
-                  class="flex items-center gap-3 rounded-lg px-4 py-2.5 text-gray-700 transition-colors hover:bg-gray-100"
+                  routerLinkActive="bg-primary/15 text-primary font-semibold"
+                  class="flex items-center gap-3 rounded-lg px-4 py-2.5 text-gray-400 transition-colors hover:bg-white/5 hover:text-gray-200"
                   (click)="sidebarOpen.set(false)"
                 >
                   <i class="mdi mdi-{{ item.icon }} text-xl"></i>

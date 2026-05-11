@@ -19,28 +19,28 @@ const BORDER_COLORS: Record<string, string> = {
   imports: [UpperCasePipe, FormsModule, FileUploadComponent],
   template: `
     <div
-      class="mb-4 rounded-lg border border-gray-200 border-l-4 bg-white p-4 shadow-sm"
+      class="mb-4 rounded-lg border border-gray-700 border-l-4 bg-surface-light p-4"
       [class]="BORDER_COLORS[task.type] || ''"
     >
       <!-- Header -->
       <div class="mb-2 flex items-start justify-between">
         <div>
-          <h3 class="font-semibold text-gray-900">
+          <h3 class="font-semibold text-gray-100">
             {{ task.title }}
           </h3>
           <div class="mt-1 flex flex-wrap gap-1.5">
             <span class="rounded-full px-2 py-0.5 text-xs font-medium"
-              [class]="task.type === 'exam' ? 'bg-blue-100 text-blue-700' : task.type === 'sales' ? 'bg-green-100 text-green-700' : 'bg-purple-100 text-purple-700'">
+              [class]="task.type === 'exam' ? 'bg-primary/20 text-primary' : task.type === 'sales' ? 'bg-success/20 text-success' : 'bg-coding/20 text-coding'">
               {{ task.type | uppercase }}
             </span>
             @if (task.subject) {
-              <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{{ task.subject }}</span>
+              <span class="rounded-full bg-gray-800 px-2 py-0.5 text-xs text-gray-400">{{ task.subject }}</span>
             }
             @if (task.examType) {
-              <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{{ task.examType }}</span>
+              <span class="rounded-full bg-gray-800 px-2 py-0.5 text-xs text-gray-400">{{ task.examType }}</span>
             }
             <span class="rounded-full px-2 py-0.5 text-xs font-medium"
-              [class]="task.status === 'reviewed' ? 'bg-green-100 text-green-700' : task.status === 'submitted' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'">
+              [class]="task.status === 'reviewed' ? 'bg-success/20 text-success' : task.status === 'submitted' ? 'bg-primary/20 text-primary' : 'bg-warning/20 text-warning'">
               {{ task.status }}
             </span>
           </div>
@@ -94,16 +94,16 @@ const BORDER_COLORS: Record<string, string> = {
 
       <!-- Abin: Review -->
       @if (viewMode.viewMode() === 'parent' && task.status === 'submitted') {
-        <div class="mt-4 flex flex-col gap-3 rounded-lg bg-gray-50 p-3">
+        <div class="mt-4 flex flex-col gap-3 rounded-lg bg-surface-dark p-3">
           <div>
             <label class="mb-1 block text-sm font-medium text-gray-700">Marks (0-100)</label>
             <input type="number" [(ngModel)]="reviewMarks" min="0" max="100"
-              class="w-32 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+              class="w-32 rounded-lg border border-gray-600 bg-surface px-3 py-2 text-sm text-gray-200 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
           </div>
           <div>
             <label class="mb-1 block text-sm font-medium text-gray-700">Feedback</label>
             <textarea [(ngModel)]="reviewFeedback" rows="2"
-              class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"></textarea>
+              class="w-full rounded-lg border border-gray-600 bg-surface px-3 py-2 text-sm text-gray-200 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"></textarea>
           </div>
           <button
             class="flex w-fit items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"

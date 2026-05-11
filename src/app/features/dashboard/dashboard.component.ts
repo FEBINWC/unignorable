@@ -18,7 +18,7 @@ import { CountdownPipe } from '../../shared/pipes/countdown.pipe';
   template: `
     <div class="mx-auto max-w-3xl">
       <div class="mb-4">
-        <h1 class="text-2xl font-bold text-gray-900">
+        <h1 class="text-2xl font-bold text-white">
           {{ viewMode.viewMode() === 'febin' ? "Febin's Dashboard" : "Parent's Review Queue" }}
         </h1>
         <p class="text-sm text-gray-500">{{ today | date: 'EEEE, MMMM d, y' }}</p>
@@ -30,7 +30,7 @@ import { CountdownPipe } from '../../shared/pipes/countdown.pipe';
         <div class="flex flex-wrap gap-4">
           <app-streak-badge></app-streak-badge>
           @if (nextDeadline(); as deadline) {
-            <div class="flex flex-1 items-center gap-3 rounded-xl border border-gray-200 bg-white p-4 shadow-sm min-w-[200px]">
+            <div class="flex flex-1 items-center gap-3 rounded-xl border border-gray-700 bg-surface p-4 shadow-sm min-w-[200px]">
               <i class="mdi mdi-flag text-2xl text-warning"></i>
               <div>
                 <strong class="text-sm">{{ deadline.title }}</strong>
@@ -42,7 +42,7 @@ import { CountdownPipe } from '../../shared/pipes/countdown.pipe';
       </div>
 
       @if (viewMode.viewMode() === 'parent') {
-        <div class="mb-4 flex items-center gap-2 rounded-lg bg-blue-50 px-4 py-3 font-medium text-primary">
+        <div class="mb-4 flex items-center gap-2 rounded-lg bg-primary/10 px-4 py-3 font-medium text-primary">
           <i class="mdi mdi-file-document-edit-outline text-xl"></i>
           {{ pendingReviewCount() }} tasks pending review
           <a routerLink="/calendar" class="ml-auto text-sm text-primary hover:underline">View Calendar</a>
@@ -53,7 +53,7 @@ import { CountdownPipe } from '../../shared/pipes/countdown.pipe';
       @if (currentDayOrder(); as dayOrder) {
         <div class="mb-3 flex items-center justify-between">
           <h2 class="text-lg font-semibold">Day Order #{{ dayOrder.dayOrder }}</h2>
-          <span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">
+          <span class="rounded-full bg-gray-800 px-3 py-1 text-xs font-medium text-gray-400">
             Phase {{ dayOrder.phase }} &middot; {{ dayOrder.dayType }}
           </span>
         </div>
@@ -62,21 +62,21 @@ import { CountdownPipe } from '../../shared/pipes/countdown.pipe';
       }
 
       @if (tasks().length === 0) {
-        <div class="rounded-lg border border-gray-200 bg-white p-8 text-center text-gray-500">
+        <div class="rounded-lg border border-gray-700 bg-surface p-8 text-center text-gray-500">
           Loading tasks...
         </div>
       }
 
       <!-- Block 1: Exam (9:00 AM - 12:30 PM) -->
       @if (examTasks().length > 0) {
-        <div class="mb-5 rounded-xl border border-blue-200 bg-white overflow-hidden">
-          <div class="flex items-center gap-3 bg-blue-50 px-4 py-3 border-b border-blue-200">
-            <i class="mdi mdi-school text-xl text-exam"></i>
+        <div class="mb-5 rounded-xl border border-primary/30 bg-surface overflow-hidden">
+          <div class="flex items-center gap-3 bg-primary/10 px-4 py-3 border-b border-primary/30">
+            <i class="mdi mdi-school text-xl text-primary"></i>
             <div>
-              <h3 class="font-semibold text-exam">Exam Block</h3>
+              <h3 class="font-semibold text-primary">Exam Block</h3>
               <p class="text-xs text-gray-500">9:00 AM — 12:30 PM (3.5 hrs)</p>
             </div>
-            <div class="ml-auto flex items-center gap-1.5 rounded-full bg-blue-100 px-2.5 py-1 text-xs font-medium text-blue-700">
+            <div class="ml-auto flex items-center gap-1.5 rounded-full bg-primary/20 px-2.5 py-1 text-xs font-medium text-primary">
               <i class="mdi mdi-clock-outline text-sm"></i> 9:00 — 12:30
             </div>
           </div>
@@ -91,22 +91,22 @@ import { CountdownPipe } from '../../shared/pipes/countdown.pipe';
       <!-- Break indicator -->
       @if (examTasks().length > 0 && salesTasks().length > 0) {
         <div class="mb-5 flex items-center gap-3 px-4 text-xs text-gray-400">
-          <div class="flex-1 border-t border-dashed border-gray-300"></div>
+          <div class="flex-1 border-t border-dashed border-gray-700"></div>
           <span><i class="mdi mdi-food"></i> Lunch Break &middot; 12:30 — 1:30 PM</span>
-          <div class="flex-1 border-t border-dashed border-gray-300"></div>
+          <div class="flex-1 border-t border-dashed border-gray-700"></div>
         </div>
       }
 
       <!-- Block 2: Sales (1:30 PM - 4:00 PM) -->
       @if (salesTasks().length > 0) {
-        <div class="mb-5 rounded-xl border border-green-200 bg-white overflow-hidden">
-          <div class="flex items-center gap-3 bg-green-50 px-4 py-3 border-b border-green-200">
-            <i class="mdi mdi-handshake text-xl text-sales"></i>
+        <div class="mb-5 rounded-xl border border-success/30 bg-surface overflow-hidden">
+          <div class="flex items-center gap-3 bg-success/10 px-4 py-3 border-b border-success/30">
+            <i class="mdi mdi-handshake text-xl text-success"></i>
             <div>
-              <h3 class="font-semibold text-sales">Sales Block</h3>
+              <h3 class="font-semibold text-success">Sales Block</h3>
               <p class="text-xs text-gray-500">1:30 PM — 3:45 PM (2.25 hrs)</p>
             </div>
-            <div class="ml-auto flex items-center gap-1.5 rounded-full bg-green-100 px-2.5 py-1 text-xs font-medium text-green-700">
+            <div class="ml-auto flex items-center gap-1.5 rounded-full bg-success/20 px-2.5 py-1 text-xs font-medium text-success">
               <i class="mdi mdi-clock-outline text-sm"></i> 1:30 — 3:45
             </div>
           </div>
@@ -121,22 +121,22 @@ import { CountdownPipe } from '../../shared/pipes/countdown.pipe';
       <!-- Break indicator -->
       @if (salesTasks().length > 0 && codingTasks().length > 0) {
         <div class="mb-5 flex items-center gap-3 px-4 text-xs text-gray-400">
-          <div class="flex-1 border-t border-dashed border-gray-300"></div>
+          <div class="flex-1 border-t border-dashed border-gray-700"></div>
           <span><i class="mdi mdi-coffee"></i> Break &middot; 3:45 — 4:30 PM</span>
-          <div class="flex-1 border-t border-dashed border-gray-300"></div>
+          <div class="flex-1 border-t border-dashed border-gray-700"></div>
         </div>
       }
 
       <!-- Block 3: Coding (4:15 PM - 7:00 PM) -->
       @if (codingTasks().length > 0) {
-        <div class="mb-5 rounded-xl border border-purple-200 bg-white overflow-hidden">
-          <div class="flex items-center gap-3 bg-purple-50 px-4 py-3 border-b border-purple-200">
+        <div class="mb-5 rounded-xl border border-coding/30 bg-surface overflow-hidden">
+          <div class="flex items-center gap-3 bg-coding/10 px-4 py-3 border-b border-coding/30">
             <i class="mdi mdi-code-tags text-xl text-coding"></i>
             <div>
               <h3 class="font-semibold text-coding">Coding Block</h3>
               <p class="text-xs text-gray-500">4:30 PM — 7:00 PM (2.5 hrs)</p>
             </div>
-            <div class="ml-auto flex items-center gap-1.5 rounded-full bg-purple-100 px-2.5 py-1 text-xs font-medium text-purple-700">
+            <div class="ml-auto flex items-center gap-1.5 rounded-full bg-coding/20 px-2.5 py-1 text-xs font-medium text-coding">
               <i class="mdi mdi-clock-outline text-sm"></i> 4:30 — 7:00
             </div>
           </div>

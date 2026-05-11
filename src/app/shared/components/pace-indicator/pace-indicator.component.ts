@@ -3,11 +3,11 @@ import { PaceService } from '../../../core/services/pace.service';
 import { PaceInfo } from '../../../core/models/task.model';
 
 const STATUS_STYLES: Record<string, { bg: string; text: string; bar: string }> = {
-  'ahead': { bg: 'bg-green-50', text: 'text-success-dark', bar: 'bg-success' },
-  'on-track': { bg: 'bg-green-50', text: 'text-success-dark', bar: 'bg-success' },
-  'slightly-behind': { bg: 'bg-yellow-50', text: 'text-yellow-700', bar: 'bg-yellow-500' },
-  'behind': { bg: 'bg-orange-50', text: 'text-warning-dark', bar: 'bg-warning' },
-  'critical': { bg: 'bg-red-50', text: 'text-error', bar: 'bg-error' },
+  'ahead': { bg: 'bg-success/10', text: 'text-success', bar: 'bg-success' },
+  'on-track': { bg: 'bg-success/10', text: 'text-success', bar: 'bg-success' },
+  'slightly-behind': { bg: 'bg-yellow-500/10', text: 'text-yellow-400', bar: 'bg-yellow-500' },
+  'behind': { bg: 'bg-warning/10', text: 'text-warning', bar: 'bg-warning' },
+  'critical': { bg: 'bg-error/10', text: 'text-error', bar: 'bg-error' },
 };
 
 @Component({
@@ -15,7 +15,7 @@ const STATUS_STYLES: Record<string, { bg: string; text: string; bar: string }> =
   standalone: true,
   template: `
     @if (pace(); as p) {
-      <div class="rounded-xl border p-4 shadow-sm" [class]="styles[p.status].bg">
+      <div class="rounded-xl border border-gray-700 p-4" [class]="styles[p.status].bg">
         <div class="flex items-center justify-between">
           <div>
             <span class="text-2xl font-bold" [class]="styles[p.status].text">
@@ -38,7 +38,7 @@ const STATUS_STYLES: Record<string, { bg: string; text: string; bar: string }> =
         </div>
 
         <!-- Progress bar -->
-        <div class="mt-3 h-2.5 w-full overflow-hidden rounded-full bg-gray-200">
+        <div class="mt-3 h-2.5 w-full overflow-hidden rounded-full bg-gray-700">
           <div class="h-full rounded-full transition-all" [class]="styles[p.status].bar"
             [style.width.%]="(p.dayOrdersCompleted / p.totalDayOrders) * 100"></div>
         </div>
