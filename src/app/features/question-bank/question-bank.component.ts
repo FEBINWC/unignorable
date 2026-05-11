@@ -77,7 +77,8 @@ export class QuestionBankComponent {
 
   filtered = () => {
     const f = this.filter();
-    return f ? this.papers.filter((p) => p.subject === f) : this.papers;
+    const list = f ? this.papers.filter((p) => p.subject === f) : this.papers;
+    return [...list].sort((a, b) => parseInt(b.dayOrders) - parseInt(a.dayOrders));
   };
 
   countBySubject(sub: string): number {
