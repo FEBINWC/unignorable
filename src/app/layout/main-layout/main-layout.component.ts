@@ -73,6 +73,7 @@ export class MainLayoutComponent {
     { route: '/deadlines', icon: 'flag', label: 'Deadlines', parentOnly: false },
     { route: '/trends', icon: 'trending-up', label: 'Score Trends', parentOnly: false },
     { route: '/weekly-summary', icon: 'file-document-outline', label: 'Weekly Summary', parentOnly: false },
+    { route: '/question-bank', icon: 'file-question', label: 'Question Bank', parentOnly: false },
     { route: '/reading-list', icon: 'book-open-variant', label: 'Reading List', parentOnly: false },
     { route: '/manage-day-orders', icon: 'format-list-numbered', label: 'Manage Day Orders', parentOnly: true },
   ];

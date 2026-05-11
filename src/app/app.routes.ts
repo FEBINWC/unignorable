@@ -52,6 +52,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'question-bank',
+        loadComponent: () =>
+          import('./features/question-bank/question-bank.component').then(
+            (m) => m.QuestionBankComponent
+          ),
+      },
+      {
         path: 'reading-list',
         loadComponent: () =>
           import('./features/reading-list/reading-list.component').then(
