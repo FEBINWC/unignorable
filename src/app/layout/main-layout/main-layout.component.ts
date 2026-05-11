@@ -40,15 +40,17 @@ import { ViewModeService } from '../../core/services/view-mode.service';
         >
           <div class="flex flex-col gap-1 p-3">
             @for (item of navItems; track item.route) {
-              <a
-                [routerLink]="item.route"
-                routerLinkActive="bg-primary/10 text-primary font-semibold"
-                class="flex items-center gap-3 rounded-lg px-4 py-2.5 text-gray-700 transition-colors hover:bg-gray-100"
-                (click)="sidebarOpen.set(false)"
-              >
-                <i class="mdi mdi-{{ item.icon }} text-xl"></i>
-                <span>{{ item.label }}</span>
-              </a>
+              @if (!item.parentOnly || viewMode.viewMode() === 'parent') {
+                <a
+                  [routerLink]="item.route"
+                  routerLinkActive="bg-primary/10 text-primary font-semibold"
+                  class="flex items-center gap-3 rounded-lg px-4 py-2.5 text-gray-700 transition-colors hover:bg-gray-100"
+                  (click)="sidebarOpen.set(false)"
+                >
+                  <i class="mdi mdi-{{ item.icon }} text-xl"></i>
+                  <span>{{ item.label }}</span>
+                </a>
+              }
             }
           </div>
         </nav>
@@ -66,10 +68,12 @@ export class MainLayoutComponent {
   sidebarOpen = signal(false);
 
   navItems = [
-    { route: '/dashboard', icon: 'view-dashboard', label: 'Dashboard' },
-    { route: '/calendar', icon: 'calendar-month', label: 'Calendar' },
-    { route: '/deadlines', icon: 'flag', label: 'Deadlines' },
-    { route: '/trends', icon: 'trending-up', label: 'Score Trends' },
-    { route: '/weekly-summary', icon: 'file-document-outline', label: 'Weekly Summary' },
+    { route: '/dashboard', icon: 'view-dashboard', label: 'Dashboard', parentOnly: false },
+    { route: '/calendar', icon: 'calendar-month', label: 'Calendar', parentOnly: false },
+    { route: '/deadlines', icon: 'flag', label: 'Deadlines', parentOnly: false },
+    { route: '/trends', icon: 'trending-up', label: 'Score Trends', parentOnly: false },
+    { route: '/weekly-summary', icon: 'file-document-outline', label: 'Weekly Summary', parentOnly: false },
+    { route: '/reading-list', icon: 'book-open-variant', label: 'Reading List', parentOnly: false },
+    { route: '/manage-day-orders', icon: 'format-list-numbered', label: 'Manage Day Orders', parentOnly: true },
   ];
 }

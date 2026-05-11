@@ -51,6 +51,20 @@ export const routes: Routes = [
             (m) => m.WeeklySummaryComponent
           ),
       },
+      {
+        path: 'reading-list',
+        loadComponent: () =>
+          import('./features/reading-list/reading-list.component').then(
+            (m) => m.ReadingListComponent
+          ),
+      },
+      {
+        path: 'manage-day-orders',
+        loadComponent: () =>
+          import('./features/manage-day-orders/manage-day-orders.component').then(
+            (m) => m.ManageDayOrdersComponent
+          ),
+      },
     ],
   },
 ];
