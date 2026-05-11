@@ -56,4 +56,12 @@ export const PAPERS: Paper[] = [
     dayOrders: '5',
     file: 'bs-do5-ch1-3.html',
   },
+  {
+    id: 'acc-do4',
+    title: 'Business Transactions, Journal & Ledger',
+    subject: 'Accountancy',
+    chapters: 'Ch 4, Ch 5, Ch 6',
+    dayOrders: '4',
+    file: 'acc-do4-ch4-6.html',
+  },
 ];
