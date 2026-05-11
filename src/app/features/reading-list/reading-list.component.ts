@@ -90,15 +90,15 @@ const BOOKS: Book[] = [
 ];
 
 const DIFFICULTY_STYLES = {
-  easy: 'bg-green-100 text-green-700',
-  medium: 'bg-yellow-100 text-yellow-700',
-  advanced: 'bg-red-100 text-red-700',
+  easy: 'bg-success/20 text-success',
+  medium: 'bg-yellow-500/20 text-yellow-400',
+  advanced: 'bg-error/20 text-error',
 };
 
 const STATUS_STYLES = {
-  'not-started': 'bg-gray-100 text-gray-600',
-  reading: 'bg-blue-100 text-blue-700',
-  completed: 'bg-green-100 text-green-700',
+  'not-started': 'bg-gray-800 text-gray-400',
+  reading: 'bg-primary/20 text-primary',
+  completed: 'bg-success/20 text-success',
 };
 
 @Component({
@@ -110,13 +110,13 @@ const STATUS_STYLES = {
       <p class="mb-6 text-sm text-gray-500">Story-driven books to build sales skills. Read 1 chapter per week alongside studies.</p>
 
       <!-- Progress summary -->
-      <div class="mb-6 flex gap-4 rounded-xl bg-gradient-to-r from-blue-50 to-purple-50 p-4">
+      <div class="mb-6 flex gap-4 rounded-xl bg-surface-light border border-gray-700 p-4">
         <div class="text-center">
           <div class="text-2xl font-bold text-primary">{{ completedCount() }}</div>
           <div class="text-xs text-gray-500">Completed</div>
         </div>
         <div class="text-center">
-          <div class="text-2xl font-bold text-blue-600">{{ readingCount() }}</div>
+          <div class="text-2xl font-bold text-primary">{{ readingCount() }}</div>
           <div class="text-xs text-gray-500">Reading</div>
         </div>
         <div class="text-center">
@@ -125,27 +125,27 @@ const STATUS_STYLES = {
         </div>
         <div class="ml-auto flex items-center">
           <div class="h-2 w-32 overflow-hidden rounded-full bg-gray-200">
-            <div class="h-full rounded-full bg-green-500 transition-all" [style.width.%]="(completedCount() / books().length) * 100"></div>
+            <div class="h-full rounded-full bg-success/100 transition-all" [style.width.%]="(completedCount() / books().length) * 100"></div>
           </div>
           <span class="ml-2 text-xs text-gray-500">{{ completedCount() }}/{{ books().length }}</span>
         </div>
       </div>
 
       @for (book of books(); track book.id) {
-        <div class="mb-4 rounded-lg border bg-white shadow-sm overflow-hidden"
+        <div class="mb-4 rounded-lg border bg-surface shadow-none overflow-hidden"
           [class.border-l-4]="book.status === 'reading'"
-          [class.border-l-blue-500]="book.status === 'reading'"
+          [class.border-l-primary]="book.status === 'reading'"
           [class.opacity-60]="book.status === 'completed'">
 
           <!-- Header -->
           <div class="flex items-start gap-3 p-4">
-            <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gray-100 text-lg font-bold text-gray-400">
+            <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gray-800 text-lg font-bold text-gray-400">
               {{ book.id }}
             </div>
             <div class="flex-1">
               <div class="flex items-start justify-between gap-2">
                 <div>
-                  <h3 class="font-semibold text-gray-900">{{ book.title }}</h3>
+                  <h3 class="font-semibold text-gray-100">{{ book.title }}</h3>
                   <p class="text-sm text-gray-500">{{ book.author }} · {{ book.pages }} pages</p>
                 </div>
                 <div class="flex flex-shrink-0 gap-1.5">
@@ -158,16 +158,16 @@ const STATUS_STYLES = {
                 </div>
               </div>
 
-              <div class="mt-2 text-sm text-gray-600">
-                <span class="font-medium text-gray-700">Style:</span> {{ book.style }}
+              <div class="mt-2 text-sm text-gray-400">
+                <span class="font-medium text-gray-300">Style:</span> {{ book.style }}
               </div>
-              <div class="mt-1 text-sm text-gray-600">
-                <span class="font-medium text-gray-700">Teaches:</span> {{ book.teaches }}
+              <div class="mt-1 text-sm text-gray-400">
+                <span class="font-medium text-gray-300">Teaches:</span> {{ book.teaches }}
               </div>
 
               @if (expandedId() === book.id) {
-                <div class="mt-3 rounded-lg bg-gray-50 p-3 text-sm text-gray-600">
-                  <p class="font-medium text-gray-700">Why this book:</p>
+                <div class="mt-3 rounded-lg bg-surface-dark p-3 text-sm text-gray-400">
+                  <p class="font-medium text-gray-300">Why this book:</p>
                   <p class="mt-1">{{ book.why }}</p>
                   <p class="mt-2 text-xs text-gray-400">Recommended for: {{ book.month }}</p>
                 </div>
@@ -176,7 +176,7 @@ const STATUS_STYLES = {
           </div>
 
           <!-- Actions -->
-          <div class="flex items-center gap-2 border-t bg-gray-50 px-4 py-2">
+          <div class="flex items-center gap-2 border-t bg-surface-dark px-4 py-2">
             <button class="text-xs text-gray-500 hover:text-primary" (click)="toggleExpand(book.id)">
               {{ expandedId() === book.id ? 'Less' : 'More' }}
             </button>
@@ -184,19 +184,19 @@ const STATUS_STYLES = {
             @if (viewMode.viewMode() === 'parent') {
               <div class="ml-auto flex gap-1.5">
                 @if (book.status !== 'reading') {
-                  <button class="rounded bg-blue-100 px-2 py-1 text-xs text-blue-700 hover:bg-blue-200"
+                  <button class="rounded bg-primary/20 px-2 py-1 text-xs text-primary hover:bg-blue-200"
                     (click)="setStatus(book.id, 'reading')">
                     <i class="mdi mdi-book-open-page-variant"></i> Mark Reading
                   </button>
                 }
                 @if (book.status !== 'completed') {
-                  <button class="rounded bg-green-100 px-2 py-1 text-xs text-green-700 hover:bg-green-200"
+                  <button class="rounded bg-success/20 px-2 py-1 text-xs text-success hover:bg-green-200"
                     (click)="setStatus(book.id, 'completed')">
                     <i class="mdi mdi-check"></i> Mark Done
                   </button>
                 }
                 @if (book.status !== 'not-started') {
-                  <button class="rounded bg-gray-100 px-2 py-1 text-xs text-gray-600 hover:bg-gray-200"
+                  <button class="rounded bg-gray-800 px-2 py-1 text-xs text-gray-400 hover:bg-white/10"
                     (click)="setStatus(book.id, 'not-started')">
                     Reset
                   </button>
@@ -204,7 +204,7 @@ const STATUS_STYLES = {
               </div>
             } @else {
               @if (book.status === 'reading') {
-                <span class="ml-auto flex items-center gap-1 text-xs font-medium text-blue-600">
+                <span class="ml-auto flex items-center gap-1 text-xs font-medium text-primary">
                   <i class="mdi mdi-book-open-page-variant"></i> Currently reading
                 </span>
               }

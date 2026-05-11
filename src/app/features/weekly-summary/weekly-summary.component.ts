@@ -12,13 +12,13 @@ import { WeeklyReport } from '../../core/models/weekly-report.model';
       <h1 class="mb-4 text-2xl font-bold">Weekly Summary</h1>
 
       <div class="mb-5 flex flex-wrap items-center gap-3">
-        <button class="rounded-lg p-2 hover:bg-gray-100" (click)="prevWeek()">
+        <button class="rounded-lg p-2 hover:bg-gray-800" (click)="prevWeek()">
           <i class="mdi mdi-chevron-left text-xl"></i>
         </button>
         <h2 class="min-w-[200px] text-center font-semibold">
           {{ currentWeekStart() | date: 'MMM d' }} - {{ currentWeekEnd() | date: 'MMM d, y' }}
         </h2>
-        <button class="rounded-lg p-2 hover:bg-gray-100" (click)="nextWeek()">
+        <button class="rounded-lg p-2 hover:bg-gray-800" (click)="nextWeek()">
           <i class="mdi mdi-chevron-right text-xl"></i>
         </button>
         <button class="ml-auto flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-dark" (click)="generateReport()">
@@ -29,19 +29,19 @@ import { WeeklyReport } from '../../core/models/weekly-report.model';
       @if (report(); as r) {
         <!-- Stats grid -->
         <div class="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <div class="rounded-xl border bg-white p-4 text-center shadow-sm">
+          <div class="rounded-xl border bg-surface p-4 text-center shadow-none">
             <div class="text-3xl font-bold text-primary">{{ r.overallAvg | number: '1.0-0' }}</div>
             <div class="mt-1 text-xs text-gray-500">Average Score</div>
           </div>
-          <div class="rounded-xl border bg-white p-4 text-center shadow-sm">
+          <div class="rounded-xl border bg-surface p-4 text-center shadow-none">
             <div class="text-3xl font-bold text-primary">{{ r.tasksCompleted }}</div>
             <div class="mt-1 text-xs text-gray-500">Completed</div>
           </div>
-          <div class="rounded-xl border bg-white p-4 text-center shadow-sm">
+          <div class="rounded-xl border bg-surface p-4 text-center shadow-none">
             <div class="text-3xl font-bold text-warning-dark">{{ r.tasksPending }}</div>
             <div class="mt-1 text-xs text-gray-500">Pending</div>
           </div>
-          <div class="rounded-xl border bg-white p-4 text-center shadow-sm">
+          <div class="rounded-xl border bg-surface p-4 text-center shadow-none">
             <div class="text-3xl font-bold text-error">{{ r.carryOvers }}</div>
             <div class="mt-1 text-xs text-gray-500">Carry-overs</div>
           </div>
@@ -50,12 +50,12 @@ import { WeeklyReport } from '../../core/models/weekly-report.model';
         <!-- Subject scores table -->
         @if (r.subjectScores | keyvalue; as scores) {
           @if (scores.length) {
-            <div class="overflow-hidden rounded-lg border bg-white shadow-sm">
+            <div class="overflow-hidden rounded-lg border bg-surface shadow-none">
               <table class="w-full text-sm">
-                <thead class="bg-gray-50">
+                <thead class="bg-surface-dark">
                   <tr>
-                    <th class="px-4 py-3 text-left font-semibold text-gray-600">Subject</th>
-                    <th class="px-4 py-3 text-right font-semibold text-gray-600">Avg Score</th>
+                    <th class="px-4 py-3 text-left font-semibold text-gray-400">Subject</th>
+                    <th class="px-4 py-3 text-right font-semibold text-gray-400">Avg Score</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -74,7 +74,7 @@ import { WeeklyReport } from '../../core/models/weekly-report.model';
           }
         }
       } @else {
-        <div class="rounded-lg border bg-white p-8 text-center text-gray-400 shadow-sm">
+        <div class="rounded-lg border bg-surface p-8 text-center text-gray-400 shadow-none">
           No report for this week. Click "Generate Report" to create one.
         </div>
       }

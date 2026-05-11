@@ -16,14 +16,14 @@ import { CountdownPipe } from '../../shared/pipes/countdown.pipe';
       <h1 class="mb-4 text-2xl font-bold">Important Deadlines</h1>
 
       @for (deadline of deadlines(); track deadline.id) {
-        <div class="mb-3 flex items-start gap-3 rounded-lg border bg-white p-4 shadow-sm"
+        <div class="mb-3 flex items-start gap-3 rounded-lg border bg-surface p-4 shadow-none"
           [class.opacity-60]="deadline.completed"
           [class.border-l-4]="!deadline.completed"
           [class.border-l-warning]="isUrgent(deadline)"
           [class.border-l-error]="isOverdue(deadline)"
           [class.border-l-gray-300]="!isUrgent(deadline) && !isOverdue(deadline)">
           <input type="checkbox" [checked]="deadline.completed" (change)="toggleComplete(deadline.id!)"
-            class="mt-1 h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary" />
+            class="mt-1 h-4 w-4 rounded border-gray-600 text-primary focus:ring-primary" />
           <div class="flex-1">
             <h3 class="font-semibold" [class.line-through]="deadline.completed">{{ deadline.title }}</h3>
             <p class="text-sm text-gray-500">{{ deadline.description }}</p>
@@ -40,17 +40,17 @@ import { CountdownPipe } from '../../shared/pipes/countdown.pipe';
       }
 
       @if (showDeadlineForm()) {
-        <div class="mt-4 rounded-lg border bg-white p-4 shadow-sm">
+        <div class="mt-4 rounded-lg border bg-surface p-4 shadow-none">
           <h3 class="mb-3 font-semibold">Add Deadline</h3>
           <div class="flex flex-col gap-3">
-            <input type="text" [(ngModel)]="newTitle" placeholder="Title" class="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
-            <input type="date" [(ngModel)]="newDate" class="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
-            <select [(ngModel)]="newType" class="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+            <input type="text" [(ngModel)]="newTitle" placeholder="Title" class="rounded-lg border border-gray-600 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+            <input type="date" [(ngModel)]="newDate" class="rounded-lg border border-gray-600 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+            <select [(ngModel)]="newType" class="rounded-lg border border-gray-600 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
               <option value="tma">TMA</option><option value="exam">Exam</option><option value="practical">Practical</option><option value="phase">Phase</option><option value="custom">Custom</option>
             </select>
-            <textarea [(ngModel)]="newDesc" rows="2" placeholder="Description" class="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"></textarea>
+            <textarea [(ngModel)]="newDesc" rows="2" placeholder="Description" class="rounded-lg border border-gray-600 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"></textarea>
             <div class="flex justify-end gap-2">
-              <button class="rounded-lg px-4 py-2 text-sm text-gray-600 hover:bg-gray-100" (click)="showDeadlineForm.set(false)">Cancel</button>
+              <button class="rounded-lg px-4 py-2 text-sm text-gray-400 hover:bg-gray-800" (click)="showDeadlineForm.set(false)">Cancel</button>
               <button class="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-dark" (click)="addDeadline()">Add</button>
             </div>
           </div>
@@ -61,8 +61,8 @@ import { CountdownPipe } from '../../shared/pipes/countdown.pipe';
       <h2 class="mb-3 mt-8 text-xl font-bold">Vacations / Leaves</h2>
 
       @for (vac of vacations(); track vac.id) {
-        <div class="mb-3 flex items-center gap-3 rounded-lg border bg-purple-50 p-4 shadow-sm">
-          <i class="mdi mdi-palm-tree text-xl text-purple-600"></i>
+        <div class="mb-3 flex items-center gap-3 rounded-lg border bg-coding/10 p-4 shadow-none">
+          <i class="mdi mdi-palm-tree text-xl text-coding"></i>
           <div class="flex-1">
             <p class="font-medium">{{ vac.start | date: 'MMM d' }} - {{ vac.end | date: 'MMM d, y' }}</p>
             <p class="text-sm text-gray-500">{{ vac.reason }}</p>
@@ -74,22 +74,22 @@ import { CountdownPipe } from '../../shared/pipes/countdown.pipe';
       }
 
       @if (showVacationForm()) {
-        <div class="mt-4 rounded-lg border bg-white p-4 shadow-sm">
+        <div class="mt-4 rounded-lg border bg-surface p-4 shadow-none">
           <h3 class="mb-3 font-semibold">Add Vacation / Leave</h3>
           <div class="flex flex-col gap-3">
             <div class="flex gap-3">
               <div class="flex-1">
                 <label class="mb-1 block text-xs text-gray-500">Start Date</label>
-                <input type="date" [(ngModel)]="vacStart" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+                <input type="date" [(ngModel)]="vacStart" class="w-full rounded-lg border border-gray-600 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
               </div>
               <div class="flex-1">
                 <label class="mb-1 block text-xs text-gray-500">End Date</label>
-                <input type="date" [(ngModel)]="vacEnd" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+                <input type="date" [(ngModel)]="vacEnd" class="w-full rounded-lg border border-gray-600 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
               </div>
             </div>
-            <input type="text" [(ngModel)]="vacReason" placeholder="Reason (e.g., Family trip)" class="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+            <input type="text" [(ngModel)]="vacReason" placeholder="Reason (e.g., Family trip)" class="rounded-lg border border-gray-600 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
             <div class="flex justify-end gap-2">
-              <button class="rounded-lg px-4 py-2 text-sm text-gray-600 hover:bg-gray-100" (click)="showVacationForm.set(false)">Cancel</button>
+              <button class="rounded-lg px-4 py-2 text-sm text-gray-400 hover:bg-gray-800" (click)="showVacationForm.set(false)">Cancel</button>
               <button class="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700" (click)="addVacation()">Add Vacation</button>
             </div>
           </div>

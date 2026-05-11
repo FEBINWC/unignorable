@@ -8,7 +8,7 @@ import { FileStorageService, UploadProgress } from '../../../core/services/stora
   imports: [DecimalPipe],
   template: `
     <div
-      class="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 p-6 text-gray-500 transition-colors hover:border-primary hover:text-primary"
+      class="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-600 p-6 text-gray-400 transition-colors hover:border-primary hover:text-primary"
       (drop)="onDrop($event)"
       (dragover)="onDragOver($event)"
       (click)="fileInput.click()"
@@ -25,7 +25,7 @@ import { FileStorageService, UploadProgress } from '../../../core/services/stora
         <i class="mdi mdi-cloud-upload text-3xl"></i>
         <span class="text-sm">Drop files or click to upload</span>
       } @else {
-        <div class="h-2 w-full overflow-hidden rounded-full bg-gray-200">
+        <div class="h-2 w-full overflow-hidden rounded-full bg-gray-700">
           <div class="h-full rounded-full bg-primary transition-all" [style.width.%]="progress"></div>
         </div>
         <span class="text-sm">Uploading... {{ progress | number: '1.0-0' }}%</span>

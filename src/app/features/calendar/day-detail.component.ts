@@ -12,14 +12,14 @@ import { TaskCardComponent } from '../../shared/components/task-card/task-card.c
   template: `
     <div class="mx-auto max-w-3xl">
       <div class="mb-4 flex items-center gap-3">
-        <a routerLink="/calendar" class="rounded-lg p-2 hover:bg-gray-100">
+        <a routerLink="/calendar" class="rounded-lg p-2 hover:bg-gray-800">
           <i class="mdi mdi-arrow-left text-xl"></i>
         </a>
         <h1 class="text-xl font-bold">{{ dateObj | date: 'EEEE, MMMM d, y' }}</h1>
       </div>
 
       @if (completion()) {
-        <div class="mb-4 rounded-lg bg-blue-50 px-4 py-2 text-sm text-primary font-medium">
+        <div class="mb-4 rounded-lg bg-primary/10 px-4 py-2 text-sm text-primary font-medium">
           Day Order #{{ completion()!.dayOrder }} completed on this date
         </div>
 

@@ -33,7 +33,7 @@ import { ColorLegendComponent } from '../../shared/components/color-legend/color
             <div></div>
           } @else {
             <div
-              class="flex min-h-[70px] flex-col items-center rounded-md border border-gray-200 p-1.5 transition-transform md:min-h-[80px]"
+              class="flex min-h-[70px] flex-col items-center rounded-md border border-gray-700 p-1.5 transition-transform md:min-h-[80px]"
               [style.background]="cell.color"
               [class.ring-2]="cell.isToday"
               [class.ring-primary]="cell.isToday"
@@ -45,9 +45,9 @@ import { ColorLegendComponent } from '../../shared/components/color-legend/color
               @if (cell.isVacation) {
                 <span class="mt-1 text-xs font-medium text-gray-500">V</span>
               } @else if (cell.completion) {
-                <span class="mt-1 text-xs font-bold text-gray-700">D{{ cell.completion.dayOrder }}</span>
+                <span class="mt-1 text-xs font-bold text-gray-300">D{{ cell.completion.dayOrder }}</span>
                 @if (cell.completion.daySummary) {
-                  <span class="text-[10px] text-gray-600">{{ cell.completion.daySummary.avgScore | number: '1.0-0' }}%</span>
+                  <span class="text-[10px] text-gray-400">{{ cell.completion.daySummary.avgScore | number: '1.0-0' }}%</span>
                 }
               }
             </div>
@@ -96,20 +96,19 @@ export class CalendarComponent implements OnInit {
       const completion = completions.get(dateStr) || null;
       const hasCompletion = completion !== null;
 
-      let color = '#ffffff';
+      let color = '#1e1e1e';
       if (isVacation) {
-        color = '#f3e8ff'; // light purple for vacation
+        color = 'rgba(123, 31, 162, 0.25)';
       } else if (isFuture) {
-        color = '#f5f5f5';
+        color = '#2a2a2a';
       } else if (completion?.daySummary) {
         const avg = completion.daySummary.avgScore;
-        if (avg >= 75) color = '#c8e6c9';
-        else if (avg >= 50) color = '#dcedc8';
-        else if (avg >= 35) color = '#fff9c4';
-        else color = '#ffcdd2';
+        if (avg >= 75) color = 'rgba(46, 125, 50, 0.35)';
+        else if (avg >= 50) color = 'rgba(76, 175, 80, 0.25)';
+        else if (avg >= 35) color = 'rgba(184, 134, 11, 0.25)';
+        else color = 'rgba(211, 47, 47, 0.25)';
       } else if (!isFuture && new Date(dateStr + 'T00:00:00').getDay() !== 0) {
-        // Past working day with no completion = missed
-        color = '#fff3e0';
+        color = 'rgba(232, 93, 4, 0.2)';
       }
 
       cells.push({ day: d, dateStr, color, isToday, hasCompletion, completion, isVacation });

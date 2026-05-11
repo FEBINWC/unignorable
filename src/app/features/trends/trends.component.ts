@@ -21,15 +21,15 @@ const SUBJECT_COLORS: Record<string, string> = {
       <h1 class="mb-4 text-2xl font-bold">Score Trends</h1>
       <div class="mb-4 flex flex-wrap gap-2">
         <button class="rounded-full px-3 py-1 text-sm font-medium transition-colors"
-          [class]="selectedSubject() === 'all' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+          [class]="selectedSubject() === 'all' ? 'bg-primary text-white' : 'bg-gray-800 text-gray-300 hover:bg-white/10'"
           (click)="selectSubject('all')">All Subjects</button>
         @for (subject of subjects; track subject) {
           <button class="rounded-full px-3 py-1 text-sm font-medium transition-colors"
-            [class]="selectedSubject() === subject ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+            [class]="selectedSubject() === subject ? 'bg-primary text-white' : 'bg-gray-800 text-gray-300 hover:bg-white/10'"
             (click)="selectSubject(subject)">{{ subject }}</button>
         }
       </div>
-      <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+      <div class="rounded-lg border border-gray-700 bg-surface p-4 shadow-none">
         @if (chartData(); as data) {
           <div class="h-[400px]">
             <canvas baseChart [data]="data" [options]="chartOptions" type="line"></canvas>

@@ -15,15 +15,15 @@ import { ScheduleService } from '../../core/services/schedule.service';
 
       <!-- Progress pointer -->
       @if (progress()) {
-        <div class="mb-6 flex items-center gap-4 rounded-lg bg-blue-50 p-4">
+        <div class="mb-6 flex items-center gap-4 rounded-lg bg-primary/10 p-4">
           <div>
-            <span class="text-sm text-gray-600">Current pointer:</span>
+            <span class="text-sm text-gray-400">Current pointer:</span>
             <span class="ml-2 text-lg font-bold text-primary">Day Order #{{ progress()!.currentDayOrder }}</span>
           </div>
           <div class="ml-auto flex items-center gap-2">
-            <label class="text-sm text-gray-600">Jump to:</label>
+            <label class="text-sm text-gray-400">Jump to:</label>
             <input type="number" [(ngModel)]="jumpTo" min="1" [max]="dayOrders().length"
-              class="w-20 rounded border border-gray-300 px-2 py-1 text-sm focus:border-primary focus:outline-none" />
+              class="w-20 rounded border border-gray-600 px-2 py-1 text-sm focus:border-primary focus:outline-none" />
             <button class="rounded bg-primary px-3 py-1 text-sm text-white hover:bg-primary-dark" (click)="jumpToOrder()">Go</button>
           </div>
         </div>
@@ -32,8 +32,8 @@ import { ScheduleService } from '../../core/services/schedule.service';
       <!-- Filters -->
       <div class="mb-4 flex flex-wrap items-center gap-3">
         <div class="flex items-center gap-2">
-          <label class="text-sm text-gray-600">Phase:</label>
-          <select [(ngModel)]="filterPhase" (ngModelChange)="applyFilter()" class="rounded border border-gray-300 px-2 py-1 text-sm">
+          <label class="text-sm text-gray-400">Phase:</label>
+          <select [(ngModel)]="filterPhase" (ngModelChange)="applyFilter()" class="rounded border border-gray-600 px-2 py-1 text-sm">
             <option [ngValue]="0">All</option>
             <option [ngValue]="1">Phase 1 (Open Book)</option>
             <option [ngValue]="2">Phase 2 (Closed Book)</option>
@@ -42,62 +42,62 @@ import { ScheduleService } from '../../core/services/schedule.service';
           </select>
         </div>
         <div class="flex items-center gap-2">
-          <label class="text-sm text-gray-600">Search:</label>
+          <label class="text-sm text-gray-400">Search:</label>
           <input type="text" [(ngModel)]="searchText" (ngModelChange)="applyFilter()" placeholder="Subject or chapter..."
-            class="rounded border border-gray-300 px-2 py-1 text-sm focus:border-primary focus:outline-none" />
+            class="rounded border border-gray-600 px-2 py-1 text-sm focus:border-primary focus:outline-none" />
         </div>
         <span class="ml-auto text-sm text-gray-500">{{ filtered().length }} of {{ dayOrders().length }} day orders</span>
       </div>
 
       <!-- Add new day order -->
       <div class="mb-4">
-        <button class="flex items-center gap-2 rounded-lg border border-dashed border-gray-300 px-4 py-2 text-sm text-gray-600 hover:border-primary hover:text-primary"
+        <button class="flex items-center gap-2 rounded-lg border border-dashed border-gray-600 px-4 py-2 text-sm text-gray-400 hover:border-primary hover:text-primary"
           (click)="showAddForm.set(!showAddForm())">
           <i class="mdi mdi-plus"></i> Add Day Order
         </button>
       </div>
 
       @if (showAddForm()) {
-        <div class="mb-6 rounded-lg border bg-white p-4 shadow-sm">
+        <div class="mb-6 rounded-lg border bg-surface p-4 shadow-none">
           <h3 class="mb-3 font-semibold">Add New Day Order</h3>
           <div class="flex flex-col gap-3">
             <div class="flex gap-3">
               <div class="flex-1">
                 <label class="mb-1 block text-xs text-gray-500">Insert at position</label>
                 <input type="number" [(ngModel)]="newPosition" min="1" [max]="dayOrders().length + 1"
-                  class="w-full rounded border border-gray-300 px-2 py-1 text-sm" />
+                  class="w-full rounded border border-gray-600 px-2 py-1 text-sm" />
               </div>
               <div class="flex-1">
                 <label class="mb-1 block text-xs text-gray-500">Phase</label>
-                <select [(ngModel)]="newPhase" class="w-full rounded border border-gray-300 px-2 py-1 text-sm">
+                <select [(ngModel)]="newPhase" class="w-full rounded border border-gray-600 px-2 py-1 text-sm">
                   <option [ngValue]="1">Phase 1</option><option [ngValue]="2">Phase 2</option>
                   <option [ngValue]="3">Phase 3</option><option [ngValue]="4">Phase 4</option>
                 </select>
               </div>
               <div class="flex-1">
                 <label class="mb-1 block text-xs text-gray-500">Type</label>
-                <select [(ngModel)]="newDayType" class="w-full rounded border border-gray-300 px-2 py-1 text-sm">
+                <select [(ngModel)]="newDayType" class="w-full rounded border border-gray-600 px-2 py-1 text-sm">
                   <option value="full">Full</option><option value="light">Light</option><option value="cumulative">Cumulative</option>
                 </select>
               </div>
             </div>
             <div>
               <label class="mb-1 block text-xs text-gray-500">Exam Subject</label>
-              <input type="text" [(ngModel)]="newSubject" placeholder="e.g., Accountancy" class="w-full rounded border border-gray-300 px-2 py-1 text-sm" />
+              <input type="text" [(ngModel)]="newSubject" placeholder="e.g., Accountancy" class="w-full rounded border border-gray-600 px-2 py-1 text-sm" />
             </div>
             <div>
               <label class="mb-1 block text-xs text-gray-500">Chapters</label>
-              <input type="text" [(ngModel)]="newChapters" placeholder="e.g., Ch 1, Ch 2, Ch 3" class="w-full rounded border border-gray-300 px-2 py-1 text-sm" />
+              <input type="text" [(ngModel)]="newChapters" placeholder="e.g., Ch 1, Ch 2, Ch 3" class="w-full rounded border border-gray-600 px-2 py-1 text-sm" />
             </div>
             <div>
               <label class="mb-1 block text-xs text-gray-500">Exam Type</label>
-              <select [(ngModel)]="newExamType" class="w-full rounded border border-gray-300 px-2 py-1 text-sm">
+              <select [(ngModel)]="newExamType" class="w-full rounded border border-gray-600 px-2 py-1 text-sm">
                 <option value="open-book">Open Book</option><option value="closed-book">Closed Book</option>
                 <option value="cumulative">Cumulative</option><option value="mock">Mock</option>
               </select>
             </div>
             <div class="flex justify-end gap-2">
-              <button class="rounded px-3 py-1 text-sm text-gray-600 hover:bg-gray-100" (click)="showAddForm.set(false)">Cancel</button>
+              <button class="rounded px-3 py-1 text-sm text-gray-400 hover:bg-gray-800" (click)="showAddForm.set(false)">Cancel</button>
               <button class="rounded bg-primary px-4 py-1 text-sm text-white hover:bg-primary-dark" (click)="addDayOrder()">Add</button>
             </div>
           </div>
@@ -107,27 +107,27 @@ import { ScheduleService } from '../../core/services/schedule.service';
       <!-- Day orders list -->
       <div class="space-y-2">
         @for (do_ of filtered(); track do_.dayOrder) {
-          <div class="rounded-lg border bg-white p-3 shadow-sm"
+          <div class="rounded-lg border bg-surface p-3 shadow-none"
             [class.ring-2]="do_.dayOrder === progress()?.currentDayOrder"
             [class.ring-primary]="do_.dayOrder === progress()?.currentDayOrder"
-            [class.bg-blue-50]="do_.dayOrder === progress()?.currentDayOrder">
+            [class.bg-primary/10]="do_.dayOrder === progress()?.currentDayOrder">
 
             @if (editingOrder() === do_.dayOrder) {
               <!-- Edit mode -->
               <div class="flex flex-col gap-2">
                 <div class="flex items-center gap-2">
                   <span class="text-sm font-bold text-gray-400">#{{ do_.dayOrder }}</span>
-                  <select [(ngModel)]="editPhase" class="rounded border border-gray-300 px-2 py-1 text-xs">
+                  <select [(ngModel)]="editPhase" class="rounded border border-gray-600 px-2 py-1 text-xs">
                     <option [ngValue]="1">Phase 1</option><option [ngValue]="2">Phase 2</option>
                     <option [ngValue]="3">Phase 3</option><option [ngValue]="4">Phase 4</option>
                   </select>
-                  <select [(ngModel)]="editDayType" class="rounded border border-gray-300 px-2 py-1 text-xs">
+                  <select [(ngModel)]="editDayType" class="rounded border border-gray-600 px-2 py-1 text-xs">
                     <option value="full">Full</option><option value="light">Light</option><option value="cumulative">Cumulative</option>
                   </select>
                 </div>
                 @for (task of getTasksArray(do_); track $index) {
                   <div class="flex gap-2 rounded p-2"
-                    [class]="task.type === 'exam' ? 'bg-blue-50' : task.type === 'sales' ? 'bg-green-50' : 'bg-purple-50'">
+                    [class]="task.type === 'exam' ? 'bg-primary/10' : task.type === 'sales' ? 'bg-success/10' : 'bg-coding/10'">
                     <span class="flex w-16 items-center justify-center rounded-full text-[10px] font-bold uppercase"
                       [class]="task.type === 'exam' ? 'bg-blue-200 text-blue-800' : task.type === 'sales' ? 'bg-green-200 text-green-800' : 'bg-purple-200 text-purple-800'">
                       {{ task.type }}
@@ -145,7 +145,7 @@ import { ScheduleService } from '../../core/services/schedule.service';
                   </div>
                 }
                 <div class="flex justify-end gap-2">
-                  <button class="rounded px-3 py-1 text-xs text-gray-500 hover:bg-gray-100" (click)="editingOrder.set(0)">Cancel</button>
+                  <button class="rounded px-3 py-1 text-xs text-gray-500 hover:bg-gray-800" (click)="editingOrder.set(0)">Cancel</button>
                   <button class="rounded bg-primary px-3 py-1 text-xs text-white hover:bg-primary-dark" (click)="saveEdit(do_)">Save</button>
                 </div>
               </div>
@@ -153,15 +153,15 @@ import { ScheduleService } from '../../core/services/schedule.service';
               <!-- View mode -->
               <div class="flex items-center gap-3">
                 <span class="w-10 text-right text-sm font-bold text-gray-400">#{{ do_.dayOrder }}</span>
-                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">P{{ do_.phase }}</span>
+                <span class="rounded-full bg-gray-800 px-2 py-0.5 text-xs text-gray-500">P{{ do_.phase }}</span>
                 <span class="rounded-full px-2 py-0.5 text-xs"
-                  [class]="do_.dayType === 'cumulative' ? 'bg-purple-100 text-purple-700' : do_.dayType === 'light' ? 'bg-yellow-100 text-yellow-700' : 'bg-blue-100 text-blue-700'">
+                  [class]="do_.dayType === 'cumulative' ? 'bg-coding/20 text-coding' : do_.dayType === 'light' ? 'bg-yellow-100 text-yellow-700' : 'bg-primary/20 text-primary'">
                   {{ do_.dayType }}
                 </span>
                 <div class="flex flex-1 flex-wrap gap-1.5">
                   @for (task of getTasksArray(do_); track $index) {
                     <span class="rounded-md px-2 py-0.5 text-xs"
-                      [class]="task.type === 'exam' ? 'bg-blue-50 text-blue-700' : task.type === 'sales' ? 'bg-green-50 text-green-700' : 'bg-purple-50 text-purple-700'">
+                      [class]="task.type === 'exam' ? 'bg-primary/10 text-primary' : task.type === 'sales' ? 'bg-success/10 text-success' : 'bg-coding/10 text-coding'">
                       @if (task.type === 'exam') {
                         <strong>{{ task.subject }}</strong> · {{ task.chapters }}
                       } @else {
@@ -171,11 +171,11 @@ import { ScheduleService } from '../../core/services/schedule.service';
                   }
                 </div>
                 <div class="flex gap-1">
-                  <button class="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-primary" (click)="startEdit(do_)" title="Edit">
+                  <button class="rounded p-1 text-gray-400 hover:bg-gray-800 hover:text-primary" (click)="startEdit(do_)" title="Edit">
                     <i class="mdi mdi-pencil"></i>
                   </button>
                   @if (do_.dayOrder > (progress()?.currentDayOrder || 1)) {
-                    <button class="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-error" (click)="deleteDayOrder(do_.dayOrder)" title="Delete">
+                    <button class="rounded p-1 text-gray-400 hover:bg-gray-800 hover:text-error" (click)="deleteDayOrder(do_.dayOrder)" title="Delete">
                       <i class="mdi mdi-delete"></i>
                     </button>
                   }
