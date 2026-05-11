@@ -29,10 +29,10 @@ export const appConfig: ApplicationConfig = {
     // prevents "outside injection context" errors in async code)
     importProvidersFrom(AngularFireModule.initializeApp(environment.firebaseConfig)),
 
-    // PWA
-    provideServiceWorker('ngsw-worker.js', {
-      enabled: !isDevMode(),
-      registrationStrategy: 'registerWhenStable:30000',
-    }),
+    // PWA — disabled temporarily to clear stale caches
+    // provideServiceWorker('ngsw-worker.js', {
+    //   enabled: !isDevMode(),
+    //   registrationStrategy: 'registerWhenStable:30000',
+    // }),
   ],
 };
