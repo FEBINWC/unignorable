@@ -13,9 +13,9 @@ import { ViewModeService } from '../../../core/services/view-mode.service';
       >Febin</button>
       <button
         class="rounded-r-lg px-3 py-1 transition-colors"
-        [class]="viewMode.viewMode() === 'abin' ? 'bg-white text-primary font-semibold' : 'text-white/80 hover:bg-white/10'"
-        (click)="viewMode.setMode('abin')"
-      >Abin</button>
+        [class]="viewMode.viewMode() === 'parent' ? 'bg-white text-primary font-semibold' : 'text-white/80 hover:bg-white/10'"
+        (click)="viewMode.setMode('parent')"
+      >Parent</button>
     </div>
   `,
 })

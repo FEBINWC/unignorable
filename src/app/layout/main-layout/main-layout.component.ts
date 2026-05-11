@@ -19,7 +19,7 @@ import { ViewModeService } from '../../core/services/view-mode.service';
         </button>
         <span class="text-lg font-semibold">NIOS Study Tracker</span>
         <span class="flex-1"></span>
-        <span class="hidden text-sm opacity-90 sm:inline">{{ viewMode.viewMode() === 'febin' ? 'Febin' : 'Abin' }}</span>
+        <span class="hidden text-sm opacity-90 sm:inline">{{ viewMode.viewMode() === 'febin' ? 'Febin' : 'Parent' }}</span>
         <app-view-toggle></app-view-toggle>
       </header>
 

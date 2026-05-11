@@ -54,11 +54,11 @@ const BORDER_COLORS: Record<string, string> = {
       }
 
       <!-- Proofs -->
-      @if (task.proofUrls.length) {
+      @if ((task.proofUrls || []).length) {
         <div class="mt-3">
-          <strong class="text-sm">Proofs ({{ task.proofUrls.length }}):</strong>
+          <strong class="text-sm">Proofs ({{ (task.proofUrls || []).length }}):</strong>
           <div class="mt-1 flex flex-wrap gap-2">
-            @for (url of task.proofUrls; track url; let i = $index) {
+            @for (url of (task.proofUrls || []); track url; let i = $index) {
               <a [href]="url" target="_blank" class="flex items-center gap-1 text-sm text-primary hover:underline">
                 <i class="mdi mdi-attachment"></i> File {{ i + 1 }}
               </a>
@@ -85,7 +85,7 @@ const BORDER_COLORS: Record<string, string> = {
           <button
             class="mt-3 flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark disabled:opacity-50"
             (click)="submitTask()"
-            [disabled]="!task.proofUrls.length"
+            [disabled]="!(task.proofUrls || []).length"
           >
             <i class="mdi mdi-send"></i> Mark as Submitted
           </button>
@@ -93,7 +93,7 @@ const BORDER_COLORS: Record<string, string> = {
       }
 
       <!-- Abin: Review -->
-      @if (viewMode.viewMode() === 'abin' && task.status === 'submitted') {
+      @if (viewMode.viewMode() === 'parent' && task.status === 'submitted') {
         <div class="mt-4 flex flex-col gap-3 rounded-lg bg-gray-50 p-3">
           <div>
             <label class="mb-1 block text-sm font-medium text-gray-700">Marks (0-100)</label>

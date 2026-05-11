@@ -91,7 +91,7 @@ export class PaceService implements OnDestroy {
       suggestion = `${behindBy} days behind. Use Sundays and double up Saturdays to recover.`;
     } else {
       status = 'critical';
-      suggestion = `${behindBy} days behind. Abin needs to reorganize — consider compressing easier subjects.`;
+      suggestion = `${behindBy} days behind. Parent needs to reorganize — consider compressing easier subjects.`;
     }
 
     return {

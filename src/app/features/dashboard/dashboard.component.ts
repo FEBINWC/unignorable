@@ -19,7 +19,7 @@ import { CountdownPipe } from '../../shared/pipes/countdown.pipe';
     <div class="mx-auto max-w-3xl">
       <div class="mb-4">
         <h1 class="text-2xl font-bold text-gray-900">
-          {{ viewMode.viewMode() === 'febin' ? "Febin's Dashboard" : "Abin's Review Queue" }}
+          {{ viewMode.viewMode() === 'febin' ? "Febin's Dashboard" : "Parent's Review Queue" }}
         </h1>
         <p class="text-sm text-gray-500">{{ today | date: 'EEEE, MMMM d, y' }}</p>
       </div>
@@ -41,7 +41,7 @@ import { CountdownPipe } from '../../shared/pipes/countdown.pipe';
         </div>
       </div>
 
-      @if (viewMode.viewMode() === 'abin') {
+      @if (viewMode.viewMode() === 'parent') {
         <div class="mb-4 flex items-center gap-2 rounded-lg bg-blue-50 px-4 py-3 font-medium text-primary">
           <i class="mdi mdi-file-document-edit-outline text-xl"></i>
           {{ pendingReviewCount() }} tasks pending review
