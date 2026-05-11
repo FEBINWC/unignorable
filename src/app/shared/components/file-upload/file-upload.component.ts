@@ -34,7 +34,7 @@ import { FileStorageService, UploadProgress } from '../../../core/services/stora
   `,
 })
 export class FileUploadComponent {
-  @Input() date = '';
+  @Input() dayOrderNum = 0;
   @Input() taskId = '';
   @Output() uploaded = new EventEmitter<string>();
 
@@ -60,7 +60,7 @@ export class FileUploadComponent {
 
   private uploadFile(file: File): void {
     this.uploading = true;
-    this.storageService.uploadProof(file, this.date, this.taskId).subscribe({
+    this.storageService.uploadProof(file, String(this.dayOrderNum), this.taskId).subscribe({
       next: (p: UploadProgress) => {
         this.progress = p.progress;
         if (p.state === 'success' && p.downloadUrl) {

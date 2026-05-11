@@ -21,15 +21,11 @@ const BORDER_COLORS: Record<string, string> = {
     <div
       class="mb-4 rounded-lg border border-gray-200 border-l-4 bg-white p-4 shadow-sm"
       [class]="BORDER_COLORS[task.type] || ''"
-      [class.bg-orange-50]="task.isCarryOver"
     >
       <!-- Header -->
       <div class="mb-2 flex items-start justify-between">
         <div>
           <h3 class="font-semibold text-gray-900">
-            @if (task.isCarryOver) {
-              <i class="mdi mdi-replay text-warning mr-1"></i>
-            }
             {{ task.title }}
           </h3>
           <div class="mt-1 flex flex-wrap gap-1.5">
@@ -55,9 +51,6 @@ const BORDER_COLORS: Record<string, string> = {
       <p class="text-sm text-gray-600">{{ task.description }}</p>
       @if (task.chapters) {
         <p class="mt-1 text-sm"><strong>Chapters:</strong> {{ task.chapters }}</p>
-      }
-      @if (task.isCarryOver && task.carryOverFromDate) {
-        <p class="mt-1 text-xs text-orange-700">Carried over from {{ task.carryOverFromDate }}</p>
       }
 
       <!-- Proofs -->
@@ -88,7 +81,7 @@ const BORDER_COLORS: Record<string, string> = {
       <!-- Febin: Upload + Submit -->
       @if (viewMode.viewMode() === 'febin' && task.status === 'pending') {
         <div class="mt-4">
-          <app-file-upload [date]="date" [taskId]="task.id || ''" (uploaded)="onFileUploaded($event)"></app-file-upload>
+          <app-file-upload [dayOrderNum]="dayOrderNum" [taskId]="task.id || ''" (uploaded)="onFileUploaded($event)"></app-file-upload>
           <button
             class="mt-3 flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark disabled:opacity-50"
             (click)="submitTask()"
@@ -121,21 +114,18 @@ const BORDER_COLORS: Record<string, string> = {
         </div>
       }
 
-      <!-- Abin: Carry-over for low scores -->
-      @if (viewMode.viewMode() === 'abin' && task.status === 'reviewed' && task.marks !== null && task.marks < 35) {
-        <button
-          class="mt-3 flex items-center gap-2 rounded-lg border border-warning px-4 py-2 text-sm font-medium text-warning hover:bg-warning/10"
-          (click)="triggerCarryOver()"
-        >
-          <i class="mdi mdi-replay"></i> Process Carry-Over
-        </button>
+      <!-- Low score warning -->
+      @if (task.status === 'reviewed' && task.marks !== null && task.marks < 35) {
+        <div class="mt-2 flex items-center gap-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-error">
+          <i class="mdi mdi-alert"></i> Below passing marks (35). Needs revision.
+        </div>
       }
     </div>
   `,
 })
 export class TaskCardComponent {
   @Input() task!: Task;
-  @Input() date = '';
+  @Input() dayOrderNum = 0;
 
   viewMode = inject(ViewModeService);
   private scheduleService = inject(ScheduleService);
@@ -146,18 +136,15 @@ export class TaskCardComponent {
   reviewFeedback = '';
 
   async onFileUploaded(url: string): Promise<void> {
-    if (this.task.id) await this.scheduleService.addProofUrl(this.date, this.task.id, url);
+    if (this.task.id) await this.scheduleService.addProofUrl(this.dayOrderNum, this.task.id, url);
   }
   async submitTask(): Promise<void> {
     if (this.task.id) {
-      await this.scheduleService.updateTaskStatus(this.date, this.task.id, 'submitted');
+      await this.scheduleService.updateTaskStatus(this.dayOrderNum, this.task.id, 'submitted');
       await this.streakService.recalculateStreak();
     }
   }
   async submitReview(): Promise<void> {
-    if (this.task.id) await this.scheduleService.updateTaskMarks(this.date, this.task.id, this.reviewMarks, this.reviewFeedback);
-  }
-  async triggerCarryOver(): Promise<void> {
-    if (this.task.id) await this.scheduleService.processCarryOver(this.date, this.task.id);
+    if (this.task.id) await this.scheduleService.updateTaskMarks(this.dayOrderNum, this.task.id, this.reviewMarks, this.reviewFeedback);
   }
 }

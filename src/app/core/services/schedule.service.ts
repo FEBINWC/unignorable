@@ -3,229 +3,192 @@ import {
   Database,
   get,
   onValue,
-  push,
   ref,
   set,
   update,
   Unsubscribe,
 } from '@angular/fire/database';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { DaySchedule, DaySummary, Task, TaskStatus } from '../models/task.model';
+import { Completion, DayOrder, DaySummary, Progress, Task } from '../models/task.model';
 
 @Injectable({ providedIn: 'root' })
 export class ScheduleService implements OnDestroy {
-  private readonly SCHEDULE_PATH = 'schedule';
   private listeners: Unsubscribe[] = [];
 
-  constructor(private db: Database, private zone: NgZone) {}
+  private progressSubject = new BehaviorSubject<Progress | null>(null);
+  progress$ = this.progressSubject.asObservable();
 
-  getTasksForDate(date: string): Observable<Task[]> {
-    const subject = new BehaviorSubject<Task[]>([]);
-    const tasksRef = ref(this.db, `${this.SCHEDULE_PATH}/${date}/tasks`);
-    const unsub = onValue(tasksRef, (snapshot) => {
-      this.zone.run(() => {
-        const data = snapshot.val();
-        const tasks: Task[] = [];
-        if (data) {
-          Object.keys(data).forEach((key) => {
-            tasks.push({ ...data[key], id: key });
-          });
-        }
-        subject.next(tasks);
-      });
+  constructor(private db: Database, private zone: NgZone) {
+    this.listenToProgress();
+  }
+
+  private listenToProgress(): void {
+    const progressRef = ref(this.db, 'progress');
+    const unsub = onValue(progressRef, (snapshot) => {
+      this.zone.run(() => this.progressSubject.next(snapshot.val()));
+    });
+    this.listeners.push(unsub);
+  }
+
+  // --- Day Orders (static curriculum) ---
+
+  async getDayOrder(num: number): Promise<DayOrder | null> {
+    const snapshot = await get(ref(this.db, `dayOrders/${num}`));
+    return snapshot.val();
+  }
+
+  getCurrentDayOrder(): Observable<{ progress: Progress; dayOrder: DayOrder | null; tasks: Task[] }> {
+    const subject = new BehaviorSubject<{ progress: Progress; dayOrder: DayOrder | null; tasks: Task[] }>({
+      progress: { currentDayOrder: 1, targetEndDate: '', startDate: '', totalDayOrders: 0 },
+      dayOrder: null,
+      tasks: [],
+    });
+
+    const progressRef = ref(this.db, 'progress');
+    const unsub = onValue(progressRef, async (snapshot) => {
+      const progress: Progress = snapshot.val();
+      if (!progress) return;
+
+      const dayOrderSnap = await get(ref(this.db, `dayOrders/${progress.currentDayOrder}`));
+      const dayOrder: DayOrder | null = dayOrderSnap.val();
+      const tasks: Task[] = [];
+      if (dayOrder?.tasks) {
+        Object.keys(dayOrder.tasks).forEach((key) => {
+          tasks.push({ ...dayOrder.tasks[key], id: key });
+        });
+      }
+
+      // Check if there's an in-progress completion (started but not fully submitted)
+      const completionSnap = await get(ref(this.db, `completions/${progress.currentDayOrder}`));
+      const completion = completionSnap.val();
+      if (completion?.tasks) {
+        // Merge completion task statuses onto day order tasks
+        tasks.forEach((t) => {
+          const compTask = completion.tasks[t.id!];
+          if (compTask) {
+            t.status = compTask.status;
+            t.proofUrls = compTask.proofUrls || [];
+            t.marks = compTask.marks;
+            t.feedback = compTask.feedback || '';
+          }
+        });
+      }
+
+      this.zone.run(() => subject.next({ progress, dayOrder, tasks }));
     });
     this.listeners.push(unsub);
     return subject.asObservable();
   }
 
-  getDaySummary(date: string): Observable<DaySummary | null> {
-    const subject = new BehaviorSubject<DaySummary | null>(null);
-    const summaryRef = ref(this.db, `${this.SCHEDULE_PATH}/${date}/daySummary`);
-    const unsub = onValue(summaryRef, (snapshot) => {
-      this.zone.run(() => {
-        subject.next(snapshot.val());
-      });
-    });
-    this.listeners.push(unsub);
-    return subject.asObservable();
+  // --- Completions ---
+
+  async getCompletion(dayOrderNum: number): Promise<Completion | null> {
+    const snapshot = await get(ref(this.db, `completions/${dayOrderNum}`));
+    return snapshot.val();
   }
 
-  async getDaySummariesForRange(
-    startDate: string,
-    endDate: string
-  ): Promise<Map<string, DaySummary>> {
-    const result = new Map<string, DaySummary>();
-    const scheduleRef = ref(this.db, this.SCHEDULE_PATH);
-    const snapshot = await get(scheduleRef);
+  async updateTaskStatus(dayOrderNum: number, taskId: string, status: string): Promise<void> {
+    const taskRef = ref(this.db, `completions/${dayOrderNum}/tasks/${taskId}`);
+    const snapshot = await get(taskRef);
+    if (snapshot.exists()) {
+      await update(taskRef, { status });
+    } else {
+      // First time touching this task — copy from day order and set status
+      const doTaskSnap = await get(ref(this.db, `dayOrders/${dayOrderNum}/tasks/${taskId}`));
+      const doTask = doTaskSnap.val();
+      if (doTask) {
+        await set(taskRef, { ...doTask, status, proofUrls: doTask.proofUrls || [] });
+      }
+    }
+    await this.recalculateSummary(dayOrderNum);
+  }
+
+  async updateTaskMarks(dayOrderNum: number, taskId: string, marks: number, feedback: string): Promise<void> {
+    const taskRef = ref(this.db, `completions/${dayOrderNum}/tasks/${taskId}`);
+    await update(taskRef, { marks, feedback, status: 'reviewed' });
+    await this.recalculateSummary(dayOrderNum);
+  }
+
+  async addProofUrl(dayOrderNum: number, taskId: string, url: string): Promise<void> {
+    const taskRef = ref(this.db, `completions/${dayOrderNum}/tasks/${taskId}`);
+    const snapshot = await get(taskRef);
+    if (snapshot.exists()) {
+      const task = snapshot.val();
+      const urls = task.proofUrls || [];
+      urls.push(url);
+      await update(taskRef, { proofUrls: urls });
+    } else {
+      // Initialize task in completions
+      const doTaskSnap = await get(ref(this.db, `dayOrders/${dayOrderNum}/tasks/${taskId}`));
+      const doTask = doTaskSnap.val();
+      if (doTask) {
+        await set(taskRef, { ...doTask, proofUrls: [url], status: 'pending' });
+      }
+    }
+  }
+
+  async completeDayOrder(dayOrderNum: number): Promise<void> {
+    const today = new Date().toISOString().split('T')[0];
+    const completionRef = ref(this.db, `completions/${dayOrderNum}`);
+    await update(completionRef, {
+      dayOrder: dayOrderNum,
+      completedDate: today,
+    });
+    await this.recalculateSummary(dayOrderNum);
+    // Advance pointer
+    await update(ref(this.db, 'progress'), { currentDayOrder: dayOrderNum + 1 });
+  }
+
+  async getCompletionsForDateRange(start: string, end: string): Promise<Map<string, Completion>> {
+    const result = new Map<string, Completion>();
+    const snapshot = await get(ref(this.db, 'completions'));
     const data = snapshot.val();
     if (data) {
-      Object.keys(data).forEach((date) => {
-        if (date >= startDate && date <= endDate && data[date]?.daySummary) {
-          result.set(date, data[date].daySummary);
+      Object.keys(data).forEach((key) => {
+        const comp = data[key] as Completion;
+        if (comp.completedDate && comp.completedDate >= start && comp.completedDate <= end) {
+          result.set(comp.completedDate, comp);
         }
       });
     }
     return result;
   }
 
-  async getAllReviewedTasks(): Promise<{ date: string; task: Task }[]> {
-    const result: { date: string; task: Task }[] = [];
-    const scheduleRef = ref(this.db, this.SCHEDULE_PATH);
-    const snapshot = await get(scheduleRef);
+  async getAllCompletions(): Promise<Completion[]> {
+    const snapshot = await get(ref(this.db, 'completions'));
     const data = snapshot.val();
-    if (data) {
-      Object.keys(data).forEach((date) => {
-        const tasks = data[date]?.tasks;
-        if (tasks) {
-          Object.keys(tasks).forEach((taskId) => {
-            if (tasks[taskId].status === 'reviewed') {
-              result.push({ date, task: { ...tasks[taskId], id: taskId } });
-            }
-          });
-        }
-      });
-    }
-    return result;
+    if (!data) return [];
+    return Object.keys(data)
+      .map((key) => ({ ...data[key], dayOrder: parseInt(key) } as Completion))
+      .filter((c) => c.completedDate)
+      .sort((a, b) => a.dayOrder - b.dayOrder);
   }
 
-  async updateTaskStatus(
-    date: string,
-    taskId: string,
-    status: TaskStatus
-  ): Promise<void> {
-    const taskRef = ref(
-      this.db,
-      `${this.SCHEDULE_PATH}/${date}/tasks/${taskId}`
-    );
-    await update(taskRef, { status });
-    await this.recalculateDaySummary(date);
-  }
+  // --- Helpers ---
 
-  async updateTaskMarks(
-    date: string,
-    taskId: string,
-    marks: number,
-    feedback: string
-  ): Promise<void> {
-    const taskRef = ref(
-      this.db,
-      `${this.SCHEDULE_PATH}/${date}/tasks/${taskId}`
-    );
-    await update(taskRef, { marks, feedback, status: 'reviewed' as TaskStatus });
-    await this.recalculateDaySummary(date);
-  }
-
-  async addProofUrl(
-    date: string,
-    taskId: string,
-    url: string
-  ): Promise<void> {
-    const taskRef = ref(
-      this.db,
-      `${this.SCHEDULE_PATH}/${date}/tasks/${taskId}`
-    );
-    const snapshot = await get(taskRef);
-    const task = snapshot.val() as Task;
-    const urls = task?.proofUrls || [];
-    urls.push(url);
-    await update(taskRef, { proofUrls: urls });
-  }
-
-  async processCarryOver(
-    date: string,
-    taskId: string
-  ): Promise<string> {
-    const taskRef = ref(
-      this.db,
-      `${this.SCHEDULE_PATH}/${date}/tasks/${taskId}`
-    );
-    const snapshot = await get(taskRef);
-    const task = snapshot.val() as Task;
-
-    // Mark original as carry-over
-    await update(taskRef, { status: 'carry-over' as TaskStatus });
-
-    // Find next working day
-    const nextDate = this.getNextWorkingDay(date);
-
-    // Create carry-over task on next day
-    const nextDayTasksRef = ref(
-      this.db,
-      `${this.SCHEDULE_PATH}/${nextDate}/tasks`
-    );
-    await push(nextDayTasksRef, {
-      type: task.type,
-      title: `[CARRY-OVER] ${task.title}`,
-      description: task.description,
-      subject: task.subject || null,
-      chapters: task.chapters || null,
-      examType: task.examType || null,
-      status: 'pending',
-      proofUrls: [],
-      marks: null,
-      feedback: '',
-      isCarryOver: true,
-      carryOverFromDate: date,
-    });
-
-    await this.recalculateDaySummary(date);
-    await this.recalculateDaySummary(nextDate);
-
-    return nextDate;
-  }
-
-  async seedSchedule(data: {
-    [date: string]: DaySchedule;
-  }): Promise<void> {
-    const scheduleRef = ref(this.db, this.SCHEDULE_PATH);
-    await update(scheduleRef, data);
-  }
-
-  async isScheduleSeeded(): Promise<boolean> {
-    const scheduleRef = ref(this.db, this.SCHEDULE_PATH);
-    const snapshot = await get(scheduleRef);
-    return snapshot.exists();
-  }
-
-  private async recalculateDaySummary(date: string): Promise<void> {
-    const tasksRef = ref(this.db, `${this.SCHEDULE_PATH}/${date}/tasks`);
-    const snapshot = await get(tasksRef);
-    const data = snapshot.val();
-
+  private async recalculateSummary(dayOrderNum: number): Promise<void> {
+    const tasksSnap = await get(ref(this.db, `completions/${dayOrderNum}/tasks`));
+    const data = tasksSnap.val();
     if (!data) return;
 
     const tasks = Object.values(data) as Task[];
     const reviewed = tasks.filter((t) => t.status === 'reviewed');
     const totalMarks = reviewed.reduce((sum, t) => sum + (t.marks || 0), 0);
-    const avgScore = reviewed.length > 0 ? totalMarks / reviewed.length : 0;
-    const completedTasks = tasks.filter(
-      (t) => t.status === 'reviewed' || t.status === 'submitted'
-    ).length;
-    const hasCarryOvers = tasks.some((t) => t.isCarryOver);
+    const avgScore = reviewed.length > 0 ? Math.round((totalMarks / reviewed.length) * 10) / 10 : 0;
+    const completedTasks = tasks.filter((t) => t.status === 'reviewed' || t.status === 'submitted').length;
 
-    const summary: DaySummary = {
-      avgScore: Math.round(avgScore * 10) / 10,
-      totalTasks: tasks.length,
-      completedTasks,
-      hasCarryOvers,
-    };
-
-    const summaryRef = ref(
-      this.db,
-      `${this.SCHEDULE_PATH}/${date}/daySummary`
-    );
-    await set(summaryRef, summary);
+    const summary: DaySummary = { avgScore, totalTasks: tasks.length, completedTasks };
+    await set(ref(this.db, `completions/${dayOrderNum}/daySummary`), summary);
   }
 
-  private getNextWorkingDay(dateStr: string): string {
-    const date = new Date(dateStr);
-    date.setDate(date.getDate() + 1);
-    // Skip Sundays
-    if (date.getDay() === 0) {
-      date.setDate(date.getDate() + 1);
-    }
-    return date.toISOString().split('T')[0];
+  // --- Seed ---
+
+  async seedDayOrders(data: { [num: string]: DayOrder }): Promise<void> {
+    await update(ref(this.db, 'dayOrders'), data);
+  }
+
+  async seedProgress(progress: Progress): Promise<void> {
+    await set(ref(this.db, 'progress'), progress);
   }
 
   ngOnDestroy(): void {

@@ -2,7 +2,8 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { ScheduleService } from '../../core/services/schedule.service';
-import { DaySummary } from '../../core/models/task.model';
+import { PaceService } from '../../core/services/pace.service';
+import { Completion } from '../../core/models/task.model';
 import { ColorLegendComponent } from '../../shared/components/color-legend/color-legend.component';
 
 @Component({
@@ -36,15 +37,18 @@ import { ColorLegendComponent } from '../../shared/components/color-legend/color
               [style.background]="cell.color"
               [class.ring-2]="cell.isToday"
               [class.ring-primary]="cell.isToday"
-              [class.cursor-pointer]="cell.hasTasks"
-              [class.hover:scale-105]="cell.hasTasks"
-              [class.hover:shadow-md]="cell.hasTasks"
-              (click)="cell.hasTasks && openDay(cell.dateStr)"
+              [class.cursor-pointer]="cell.hasCompletion"
+              [class.hover:scale-105]="cell.hasCompletion"
+              (click)="cell.hasCompletion && openDay(cell.dateStr)"
             >
               <span class="text-sm font-semibold">{{ cell.day }}</span>
-              @if (cell.summary) {
-                <span class="mt-1 text-lg font-bold">{{ cell.summary.avgScore | number: '1.0-0' }}</span>
-                <span class="text-[10px] text-gray-600">{{ cell.summary.completedTasks }}/{{ cell.summary.totalTasks }}</span>
+              @if (cell.isVacation) {
+                <span class="mt-1 text-xs font-medium text-gray-500">V</span>
+              } @else if (cell.completion) {
+                <span class="mt-1 text-xs font-bold text-gray-700">D{{ cell.completion.dayOrder }}</span>
+                @if (cell.completion.daySummary) {
+                  <span class="text-[10px] text-gray-600">{{ cell.completion.daySummary.avgScore | number: '1.0-0' }}%</span>
+                }
               }
             </div>
           }
@@ -55,27 +59,18 @@ import { ColorLegendComponent } from '../../shared/components/color-legend/color
 })
 export class CalendarComponent implements OnInit {
   private scheduleService = inject(ScheduleService);
+  private paceService = inject(PaceService);
   private router = inject(Router);
 
   currentMonth = signal(new Date().getMonth());
   currentYear = signal(new Date().getFullYear());
   calendarCells = signal<CalendarCell[]>([]);
-
   weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
   ngOnInit(): void { this.loadMonth(); }
-
-  prevMonth(): void {
-    if (this.currentMonth() === 0) { this.currentMonth.set(11); this.currentYear.update((y) => y - 1); }
-    else { this.currentMonth.update((m) => m - 1); }
-    this.loadMonth();
-  }
-  nextMonth(): void {
-    if (this.currentMonth() === 11) { this.currentMonth.set(0); this.currentYear.update((y) => y + 1); }
-    else { this.currentMonth.update((m) => m + 1); }
-    this.loadMonth();
-  }
+  prevMonth(): void { if (this.currentMonth() === 0) { this.currentMonth.set(11); this.currentYear.update(y => y - 1); } else { this.currentMonth.update(m => m - 1); } this.loadMonth(); }
+  nextMonth(): void { if (this.currentMonth() === 11) { this.currentMonth.set(0); this.currentYear.update(y => y + 1); } else { this.currentMonth.update(m => m + 1); } this.loadMonth(); }
   openDay(dateStr: string): void { this.router.navigate(['/calendar', dateStr]); }
 
   private async loadMonth(): Promise<void> {
@@ -84,31 +79,43 @@ export class CalendarComponent implements OnInit {
     const lastDay = new Date(year, month + 1, 0);
     const startStr = `${year}-${String(month + 1).padStart(2, '0')}-01`;
     const endStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(lastDay.getDate()).padStart(2, '0')}`;
-    const summaries = await this.scheduleService.getDaySummariesForRange(startStr, endStr);
     const today = new Date().toISOString().split('T')[0];
+
+    const completions = await this.scheduleService.getCompletionsForDateRange(startStr, endStr);
     const cells: CalendarCell[] = [];
+
     let startDow = firstDay.getDay();
     startDow = startDow === 0 ? 6 : startDow - 1;
-    for (let i = 0; i < startDow; i++) cells.push({ day: 0, dateStr: '', color: '', isToday: false, hasTasks: false, summary: null });
+    for (let i = 0; i < startDow; i++) cells.push({ day: 0, dateStr: '', color: '', isToday: false, hasCompletion: false, completion: null, isVacation: false });
+
     for (let d = 1; d <= lastDay.getDate(); d++) {
       const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-      const summary = summaries.get(dateStr) || null;
       const isToday = dateStr === today;
       const isFuture = dateStr > today;
-      const hasTasks = summary !== null && summary.totalTasks > 0;
+      const isVacation = this.paceService.isVacationDate(dateStr);
+      const completion = completions.get(dateStr) || null;
+      const hasCompletion = completion !== null;
+
       let color = '#ffffff';
-      if (isFuture) color = '#f5f5f5';
-      else if (summary && summary.totalTasks > 0) {
-        if (summary.completedTasks < summary.totalTasks || summary.hasCarryOvers) color = '#fff3e0';
-        else if (summary.avgScore >= 75) color = '#c8e6c9';
-        else if (summary.avgScore >= 50) color = '#dcedc8';
-        else if (summary.avgScore >= 35) color = '#fff9c4';
+      if (isVacation) {
+        color = '#f3e8ff'; // light purple for vacation
+      } else if (isFuture) {
+        color = '#f5f5f5';
+      } else if (completion?.daySummary) {
+        const avg = completion.daySummary.avgScore;
+        if (avg >= 75) color = '#c8e6c9';
+        else if (avg >= 50) color = '#dcedc8';
+        else if (avg >= 35) color = '#fff9c4';
         else color = '#ffcdd2';
+      } else if (!isFuture && new Date(dateStr + 'T00:00:00').getDay() !== 0) {
+        // Past working day with no completion = missed
+        color = '#fff3e0';
       }
-      cells.push({ day: d, dateStr, color, isToday, hasTasks, summary });
+
+      cells.push({ day: d, dateStr, color, isToday, hasCompletion, completion, isVacation });
     }
     this.calendarCells.set(cells);
   }
 }
 
-interface CalendarCell { day: number; dateStr: string; color: string; isToday: boolean; hasTasks: boolean; summary: DaySummary | null; }
+interface CalendarCell { day: number; dateStr: string; color: string; isToday: boolean; hasCompletion: boolean; completion: Completion | null; isVacation: boolean; }

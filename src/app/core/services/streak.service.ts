@@ -7,20 +7,13 @@ import {
   set,
   Unsubscribe,
 } from '@angular/fire/database';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Streak } from '../models/streak.model';
-import { DaySummary } from '../models/task.model';
 
 @Injectable({ providedIn: 'root' })
 export class StreakService implements OnDestroy {
-  private readonly STREAK_PATH = 'streaks';
-  private streakSubject = new BehaviorSubject<Streak>({
-    current: 0,
-    longest: 0,
-    lastCompletedDate: '',
-  });
+  private streakSubject = new BehaviorSubject<Streak>({ current: 0, longest: 0, lastCompletedDate: '' });
   private unsub: Unsubscribe | null = null;
-
   streak$ = this.streakSubject.asObservable();
 
   constructor(private db: Database, private zone: NgZone) {
@@ -28,53 +21,49 @@ export class StreakService implements OnDestroy {
   }
 
   private listenToStreak(): void {
-    const streakRef = ref(this.db, this.STREAK_PATH);
+    const streakRef = ref(this.db, 'streaks');
     this.unsub = onValue(streakRef, (snapshot) => {
       this.zone.run(() => {
-        const data = snapshot.val();
-        if (data) {
-          this.streakSubject.next(data);
-        }
+        if (snapshot.val()) this.streakSubject.next(snapshot.val());
       });
     });
   }
 
   async recalculateStreak(): Promise<void> {
-    const scheduleRef = ref(this.db, 'schedule');
-    const snapshot = await get(scheduleRef);
-    const data = snapshot.val();
-
+    const completionsSnap = await get(ref(this.db, 'completions'));
+    const data = completionsSnap.val();
     if (!data) return;
 
-    const today = new Date().toISOString().split('T')[0];
-    const dates = Object.keys(data)
-      .filter((d) => d <= today)
-      .sort()
-      .reverse();
+    // Get all completion dates sorted descending
+    const dates: string[] = [];
+    Object.values(data).forEach((c: any) => {
+      if (c.completedDate) dates.push(c.completedDate);
+    });
+    dates.sort().reverse();
 
+    // Count consecutive days from most recent
     let current = 0;
-    let lastCompleted = '';
+    let lastCompleted = dates[0] || '';
 
-    for (const date of dates) {
-      const summary: DaySummary = data[date]?.daySummary;
-      if (!summary) continue;
-
-      // A day counts if all tasks are done (submitted or reviewed)
-      if (summary.completedTasks >= summary.totalTasks && summary.totalTasks > 0) {
-        current++;
-        if (!lastCompleted) lastCompleted = date;
-      } else {
-        break;
+    if (dates.length > 0) {
+      current = 1;
+      for (let i = 1; i < dates.length; i++) {
+        const prev = new Date(dates[i - 1] + 'T00:00:00');
+        const curr = new Date(dates[i] + 'T00:00:00');
+        const diffDays = (prev.getTime() - curr.getTime()) / 86400000;
+        // Allow gap of 1 (consecutive) or 2 (skipped Sunday)
+        if (diffDays <= 2) {
+          current++;
+        } else {
+          break;
+        }
       }
     }
 
-    const streakRef = ref(this.db, this.STREAK_PATH);
     const existing = this.streakSubject.getValue();
-    const longest = Math.max(existing.longest, current);
-
-    await set(streakRef, {
+    await set(ref(this.db, 'streaks'), {
       current,
-      longest,
+      longest: Math.max(existing.longest, current),
       lastCompletedDate: lastCompleted,
     });
   }
