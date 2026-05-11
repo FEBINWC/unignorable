@@ -2,324 +2,394 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Accountancy (320) — Day Order 1 Question Paper</title>
+<title>Accountancy (320) — Day Order 1</title>
 <style>
-  @page { size: A4; margin: 20mm 18mm; }
+  @page { size: A4; margin: 18mm 16mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Times New Roman', Times, serif; font-size: 13px; line-height: 1.5; color: #000; }
-  .page { width: 210mm; min-height: 297mm; margin: 0 auto; padding: 18mm; }
+  body { font-family: 'Times New Roman', Times, serif; font-size: 12.5px; line-height: 1.45; color: #000; }
+  .page { width: 210mm; margin: 0 auto; padding: 16mm; }
   @media print { .page { padding: 0; width: 100%; } }
-
-  .header { text-align: center; margin-bottom: 12px; }
-  .header h1 { font-size: 18px; font-weight: bold; margin-bottom: 2px; }
-  .header h2 { font-size: 15px; font-weight: bold; margin-bottom: 8px; }
-  .header .chapters { font-size: 12px; color: #333; margin-bottom: 10px; }
-
-  .meta { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; margin-bottom: 14px; border-top: 1px solid #000; border-bottom: 1px solid #000; padding: 6px 0; }
-
-  .note-box { border: 1px solid #000; padding: 10px 14px; margin-bottom: 16px; font-size: 12px; }
-  .note-box .note-title { font-weight: bold; text-align: center; margin-bottom: 6px; font-size: 13px; }
-  .note-box ol { padding-left: 20px; }
-  .note-box li { margin-bottom: 2px; }
-
-  .section-title { text-align: center; font-weight: bold; font-size: 14px; text-decoration: underline; margin: 18px 0 10px; letter-spacing: 1px; }
-
-  .question-table { width: 100%; border-collapse: collapse; margin-bottom: 6px; }
-  .question-table td { vertical-align: top; padding: 6px 4px; border: 1px solid #888; font-size: 13px; }
-  .question-table .q-num { width: 30px; text-align: center; font-weight: bold; }
-  .question-table .q-marks { width: 35px; text-align: center; font-weight: bold; }
-  .question-table .q-body { padding: 6px 8px; }
-
-  .options { padding-left: 24px; margin-top: 4px; }
-  .options div { margin-bottom: 1px; }
-  .options-inline { display: flex; gap: 24px; padding-left: 24px; margin-top: 4px; flex-wrap: wrap; }
-
-  .sub-parts { padding-left: 20px; margin-top: 4px; }
-  .sub-parts div { margin-bottom: 3px; }
-
-  .or-divider { text-align: center; font-weight: bold; margin: 4px 0; font-size: 12px; }
-
-  .fill-blank { border-bottom: 1px solid #000; display: inline-block; width: 80px; }
-
-  .answer-key { margin-top: 24px; border-top: 2px solid #000; padding-top: 10px; }
-  .answer-key h3 { font-size: 14px; text-align: center; margin-bottom: 8px; }
-  .answer-key table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  .answer-key td, .answer-key th { border: 1px solid #888; padding: 4px 8px; }
-  .answer-key th { background: #f0f0f0; }
-
+  .header { text-align: center; margin-bottom: 10px; }
+  .header h1 { font-size: 17px; font-weight: bold; margin-bottom: 2px; }
+  .header h2 { font-size: 14px; font-weight: bold; margin-bottom: 6px; }
+  .header .sub { font-size: 11px; color: #333; }
+  .meta { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: bold; border-top: 1.5px solid #000; border-bottom: 1.5px solid #000; padding: 5px 0; margin-bottom: 12px; }
+  .note-box { border: 1px solid #000; padding: 8px 12px; margin-bottom: 14px; font-size: 11.5px; }
+  .note-box .nt { font-weight: bold; text-align: center; margin-bottom: 4px; }
+  .note-box ol { padding-left: 18px; } .note-box li { margin-bottom: 1px; }
+  .sec { text-align: center; font-weight: bold; font-size: 13px; text-decoration: underline; margin: 14px 0 8px; letter-spacing: 1px; }
+  table.q { width: 100%; border-collapse: collapse; margin-bottom: 4px; }
+  table.q td { vertical-align: top; padding: 5px 4px; border: 1px solid #999; font-size: 12.5px; }
+  .qn { width: 28px; text-align: center; font-weight: bold; }
+  .qm { width: 32px; text-align: center; font-weight: bold; }
+  .qb { padding: 5px 7px !important; }
+  .opts { padding-left: 22px; margin-top: 3px; }
+  .opts div { margin-bottom: 0; }
+  .opti { display: flex; gap: 20px; padding-left: 22px; margin-top: 3px; flex-wrap: wrap; }
+  .sub { padding-left: 18px; margin-top: 3px; }
+  .sub div { margin-bottom: 2px; }
+  .or { text-align: center; font-weight: bold; font-size: 11px; margin: 3px 0; }
+  .fb { border-bottom: 1px solid #000; display: inline-block; width: 70px; }
+  .end { text-align: center; margin-top: 18px; font-weight: bold; font-size: 13px; letter-spacing: 2px; }
   .page-break { page-break-before: always; }
 </style>
 </head>
 <body>
-
 <div class="page">
 
-  <div class="header">
-    <h1>Question Paper</h1>
-    <h2>Accountancy (320)</h2>
-    <div class="chapters">Chapters: Ch 1 — Accounting: An Introduction &nbsp;|&nbsp; Ch 2 — Accounting Concepts &nbsp;|&nbsp; Ch 3 — Accounting Conventions and Standards</div>
-  </div>
-
-  <div class="meta">
-    <span>Time: 1 Hour 30 Minutes</span>
-    <span>Day Order: 1</span>
-    <span>Maximum Marks: 40</span>
-  </div>
-
-  <div class="note-box">
-    <div class="note-title">Note:</div>
-    <ol type="i">
-      <li>This question paper consists of <b>20 questions</b> in all.</li>
-      <li>All questions are compulsory. Internal choices are given wherever required.</li>
-      <li>Marks are indicated against each question.</li>
-      <li><b>Section A</b> consists of 10 questions from <b>Q.1 to Q.10</b> (1 mark each).</li>
-      <li><b>Section B</b> consists of 6 questions from <b>Q.11 to Q.16</b> (2 marks each).</li>
-      <li><b>Section C</b> consists of 4 questions from <b>Q.17 to Q.20</b> (4 marks each).</li>
-      <li>Mode: <b>Open Book</b> — You may refer to your study material while writing.</li>
-    </ol>
-  </div>
-
-  <!-- SECTION A -->
-  <div class="section-title">SECTION — A</div>
-
-  <table class="question-table">
-    <tr>
-      <td class="q-num">1.</td>
-      <td class="q-body">
-        Accounting is the process of:
-        <div class="options">
-          <div>a) Recording financial transactions only</div>
-          <div>b) Recording, classifying, summarizing and interpreting financial transactions</div>
-          <div>c) Preparing balance sheet</div>
-          <div>d) Calculating profit or loss</div>
-        </div>
-      </td>
-      <td class="q-marks">(1)</td>
-    </tr>
-    <tr>
-      <td class="q-num">2.</td>
-      <td class="q-body">
-        Which of the following is NOT an objective of accounting?
-        <div class="options">
-          <div>a) To keep a systematic record of business transactions</div>
-          <div>b) To determine the profit or loss of the business</div>
-          <div>c) To fix the selling price of goods</div>
-          <div>d) To ascertain the financial position of the business</div>
-        </div>
-      </td>
-      <td class="q-marks">(1)</td>
-    </tr>
-    <tr>
-      <td class="q-num">3.</td>
-      <td class="q-body">
-        The users of accounting information who are NOT directly involved in running the business are called:
-        <div class="options">
-          <div>a) Internal users</div>
-          <div>b) External users</div>
-          <div>c) Managers</div>
-          <div>d) Owners</div>
-        </div>
-      </td>
-      <td class="q-marks">(1)</td>
-    </tr>
-    <tr>
-      <td class="q-num">4.</td>
-      <td class="q-body">
-        Which of the following is an internal user of accounting information?
-        <div class="options-inline">
-          <div>a) Government</div>
-          <div>b) Creditors</div>
-          <div>c) Management</div>
-          <div>d) Banks</div>
-        </div>
-      </td>
-      <td class="q-marks">(1)</td>
-    </tr>
-    <tr>
-      <td class="q-num">5.</td>
-      <td class="q-body">
-        According to the Business Entity Concept:
-        <div class="options">
-          <div>a) Business and owner are the same</div>
-          <div>b) Business has a separate existence from its owner</div>
-          <div>c) All businesses are the same</div>
-          <div>d) Business cannot own assets</div>
-        </div>
-      </td>
-      <td class="q-marks">(1)</td>
-    </tr>
-    <tr>
-      <td class="q-num">6.</td>
-      <td class="q-body">
-        The concept that requires a business to record transactions at the actual price paid is called:
-        <div class="options-inline">
-          <div>a) Going Concern Concept</div>
-          <div>b) Money Measurement Concept</div>
-          <div>c) Cost Concept</div>
-          <div>d) Dual Aspect Concept</div>
-        </div>
-      </td>
-      <td class="q-marks">(1)</td>
-    </tr>
-    <tr>
-      <td class="q-num">7.</td>
-      <td class="q-body">
-        "For every debit, there is a corresponding credit" — this statement relates to:
-        <div class="options-inline">
-          <div>a) Cost Concept</div>
-          <div>b) Money Measurement Concept</div>
-          <div>c) Dual Aspect Concept</div>
-          <div>d) Matching Concept</div>
-        </div>
-      </td>
-      <td class="q-marks">(1)</td>
-    </tr>
-    <tr>
-      <td class="q-num">8.</td>
-      <td class="q-body">
-        The convention of conservatism means:
-        <div class="options">
-          <div>a) Record all profits whether realized or not</div>
-          <div>b) Anticipate no profit but provide for all possible losses</div>
-          <div>c) Ignore losses and record only profits</div>
-          <div>d) Record transactions only when cash is received</div>
-        </div>
-      </td>
-      <td class="q-marks">(1)</td>
-    </tr>
-    <tr>
-      <td class="q-num">9.</td>
-      <td class="q-body">
-        The accounting convention that requires similar accounting treatment for similar items across periods is called:
-        <div class="options-inline">
-          <div>a) Convention of Disclosure</div>
-          <div>b) Convention of Materiality</div>
-          <div>c) Convention of Consistency</div>
-          <div>d) Convention of Conservatism</div>
-        </div>
-      </td>
-      <td class="q-marks">(1)</td>
-    </tr>
-    <tr>
-      <td class="q-num">10.</td>
-      <td class="q-body">
-        Which of the following is NOT a branch of accounting?
-        <div class="options-inline">
-          <div>a) Financial Accounting</div>
-          <div>b) Cost Accounting</div>
-          <div>c) Management Accounting</div>
-          <div>d) Personal Accounting</div>
-        </div>
-      </td>
-      <td class="q-marks">(1)</td>
-    </tr>
-  </table>
-
-  <!-- SECTION B -->
-  <div class="section-title">SECTION — B</div>
-
-  <table class="question-table">
-    <tr>
-      <td class="q-num">11.</td>
-      <td class="q-body">Define accounting. State any two objectives of accounting.</td>
-      <td class="q-marks">(2)</td>
-    </tr>
-    <tr>
-      <td class="q-num">12.</td>
-      <td class="q-body">
-        Explain the Going Concern Concept with an example.
-        <div class="or-divider">OR</div>
-        Explain the Money Measurement Concept. Give one limitation of this concept.
-      </td>
-      <td class="q-marks">(2)</td>
-    </tr>
-    <tr>
-      <td class="q-num">13.</td>
-      <td class="q-body">Distinguish between Book-keeping and Accounting. (Any two points)</td>
-      <td class="q-marks">(2)</td>
-    </tr>
-    <tr>
-      <td class="q-num">14.</td>
-      <td class="q-body">What is the Matching Concept? Why is it important?</td>
-      <td class="q-marks">(2)</td>
-    </tr>
-    <tr>
-      <td class="q-num">15.</td>
-      <td class="q-body">
-        Explain the Convention of Materiality with an example.
-        <div class="or-divider">OR</div>
-        Explain the Convention of Full Disclosure. Why is it important for external users?
-      </td>
-      <td class="q-marks">(2)</td>
-    </tr>
-    <tr>
-      <td class="q-num">16.</td>
-      <td class="q-body">
-        Fill in the blanks:
-        <div class="sub-parts">
-          <div>(i) The concept that assumes the business will continue to operate indefinitely is called the <span class="fill-blank"></span> concept.</div>
-          <div>(ii) The concept that requires recording only those transactions that can be expressed in money is called the <span class="fill-blank"></span> concept.</div>
-          <div>(iii) According to the <span class="fill-blank"></span> concept, expenses incurred in a period should be matched with the revenue earned in that period.</div>
-          <div>(iv) The <span class="fill-blank"></span> convention requires that the same accounting methods should be used from one period to the next.</div>
-        </div>
-      </td>
-      <td class="q-marks">(2)</td>
-    </tr>
-  </table>
-
-  <!-- SECTION C -->
-  <div class="section-title">SECTION — C</div>
-
-  <table class="question-table">
-    <tr>
-      <td class="q-num">17.</td>
-      <td class="q-body">
-        "Accounting is often called the language of business." Explain this statement. Also list and briefly describe any four functions of accounting.
-      </td>
-      <td class="q-marks">(4)</td>
-    </tr>
-    <tr>
-      <td class="q-num">18.</td>
-      <td class="q-body">
-        Explain the following accounting concepts with one example each:
-        <div class="sub-parts">
-          <div>(i) Business Entity Concept</div>
-          <div>(ii) Dual Aspect Concept</div>
-          <div>(iii) Accounting Period Concept</div>
-          <div>(iv) Revenue Recognition (Realisation) Concept</div>
-        </div>
-      </td>
-      <td class="q-marks">(4)</td>
-    </tr>
-    <tr>
-      <td class="q-num">19.</td>
-      <td class="q-body">
-        Ravi started a business with &#8377; 5,00,000. He brought his personal car worth &#8377; 3,00,000 into the business. During the year, the business earned &#8377; 2,00,000 as revenue and incurred &#8377; 1,20,000 as expenses.
-        <br><br>
-        Answer the following:
-        <div class="sub-parts">
-          <div>(i) What is the total capital invested by Ravi? (Applying Business Entity Concept)</div>
-          <div>(ii) What is the profit for the year? (Applying Matching Concept)</div>
-          <div>(iii) If the market value of the car is now &#8377; 3,50,000, at what value should it be shown in the books? Why? (Applying Cost Concept)</div>
-          <div>(iv) Name the concept that requires Ravi to keep his personal transactions separate from business transactions.</div>
-        </div>
-        <div class="or-divider">OR</div>
-        Explain any four Accounting Standards and why they are necessary. What body issues Accounting Standards in India?
-      </td>
-      <td class="q-marks">(4)</td>
-    </tr>
-    <tr>
-      <td class="q-num">20.</td>
-      <td class="q-body">
-        Differentiate between Accounting Concepts and Accounting Conventions. Explain any three conventions with suitable examples.
-      </td>
-      <td class="q-marks">(4)</td>
-    </tr>
-  </table>
-
-  <div style="text-align: center; margin-top: 24px; font-weight: bold; font-size: 14px; letter-spacing: 1px;">* * * * *</div>
-
+<div class="header">
+  <h1>Question Paper</h1>
+  <h2>Accountancy (320) — Day Order 1</h2>
+  <div class="sub">Ch 1: Accounting — An Introduction &nbsp;&bull;&nbsp; Ch 2: Accounting Concepts &nbsp;&bull;&nbsp; Ch 3: Accounting Conventions and Standards</div>
 </div>
 
+<div class="meta">
+  <span>Time: 2 Hours</span>
+  <span>Mode: Open Book</span>
+  <span>Maximum Marks: 60</span>
+</div>
+
+<div class="note-box">
+  <div class="nt">Note:</div>
+  <ol type="i">
+    <li>This question paper consists of <b>35 questions</b> in all.</li>
+    <li>All questions are compulsory. Internal choices are given wherever required.</li>
+    <li><b>Section A:</b> Q.1 to Q.15 — Multiple Choice / Objective (1 mark each = 15 marks)</li>
+    <li><b>Section B:</b> Q.16 to Q.25 — Short Answer / Fill in Blanks (2 marks each = 20 marks)</li>
+    <li><b>Section C:</b> Q.26 to Q.30 — Descriptive (3 marks each = 15 marks)</li>
+    <li><b>Section D:</b> Q.31 to Q.35 — Application / Numerical (2 marks each = 10 marks)</li>
+  </ol>
+</div>
+
+<!-- ===== SECTION A ===== -->
+<div class="sec">SECTION — A (1 &times; 15 = 15 Marks)</div>
+
+<table class="q">
+<tr><td class="qn">1.</td><td class="qb">
+  The American Institute of Certified Public Accountants (AICPA) defined accounting as the art of:
+  <div class="opts">
+    <div>a) Recording financial transactions</div>
+    <div>b) Recording, classifying, summarising, analysing and interpreting business transactions</div>
+    <div>c) Preparing the balance sheet</div>
+    <div>d) Maintaining books of accounts</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">2.</td><td class="qb">
+  Book-keeping is primarily concerned with:
+  <div class="opti">
+    <div>a) Interpreting data</div>
+    <div>b) Recording transactions</div>
+    <div>c) Analysing results</div>
+    <div>d) Communicating information</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">3.</td><td class="qb">
+  Which branch of accounting analyses expenditure to ascertain the cost of products manufactured?
+  <div class="opti">
+    <div>a) Financial Accounting</div>
+    <div>b) Cost Accounting</div>
+    <div>c) Tax Accounting</div>
+    <div>d) Social Accounting</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">4.</td><td class="qb">
+  Which of the following is an external user of accounting information?
+  <div class="opti">
+    <div>a) Management</div>
+    <div>b) Owners</div>
+    <div>c) Creditors</div>
+    <div>d) Employees</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">5.</td><td class="qb">
+  Which qualitative characteristic of accounting information requires that it should be free from personal bias and verifiable?
+  <div class="opti">
+    <div>a) Relevance</div>
+    <div>b) Reliability</div>
+    <div>c) Comparability</div>
+    <div>d) Understandability</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">6.</td><td class="qb">
+  The concept that treats the business and its owner as two separate entities is:
+  <div class="opti">
+    <div>a) Going Concern</div>
+    <div>b) Money Measurement</div>
+    <div>c) Business Entity</div>
+    <div>d) Cost Concept</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">7.</td><td class="qb">
+  Sincerity, loyalty and honesty of employees cannot be recorded in books of accounts. This is due to the:
+  <div class="opti">
+    <div>a) Business Entity Concept</div>
+    <div>b) Money Measurement Concept</div>
+    <div>c) Going Concern Concept</div>
+    <div>d) Matching Concept</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">8.</td><td class="qb">
+  A machine was purchased for &#8377;5,00,000. &#8377;1,000 was spent on transport and &#8377;2,000 on installation. It will be recorded in the books at:
+  <div class="opti">
+    <div>a) &#8377;5,00,000</div>
+    <div>b) &#8377;5,03,000</div>
+    <div>c) Its market price</div>
+    <div>d) &#8377;5,01,000</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">9.</td><td class="qb">
+  The fundamental accounting equation is:
+  <div class="opti">
+    <div>a) Assets = Capital &minus; Liabilities</div>
+    <div>b) Assets = Liabilities + Capital</div>
+    <div>c) Capital = Assets + Liabilities</div>
+    <div>d) Liabilities = Assets + Capital</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">10.</td><td class="qb">
+  N.P. Jeweller received an order for &#8377;5,00,000 worth of ornaments. He supplied only &#8377;2,00,000 worth by 31st December. His revenue for the year is:
+  <div class="opti">
+    <div>a) &#8377;5,00,000</div>
+    <div>b) &#8377;2,00,000</div>
+    <div>c) &#8377;3,00,000</div>
+    <div>d) Nil</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">11.</td><td class="qb">
+  The concept that requires revenue to be recognised when it becomes receivable, and expenses when they become payable (regardless of cash receipt/payment) is:
+  <div class="opti">
+    <div>a) Matching Concept</div>
+    <div>b) Accrual Concept</div>
+    <div>c) Realisation Concept</div>
+    <div>d) Going Concern Concept</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">12.</td><td class="qb">
+  "Anticipate no profit but provide for all possible losses" — this is the convention of:
+  <div class="opti">
+    <div>a) Consistency</div>
+    <div>b) Full Disclosure</div>
+    <div>c) Materiality</div>
+    <div>d) Conservatism</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">13.</td><td class="qb">
+  A pen worth &#8377;10 purchased for office use is treated as expense, not as an asset. This is as per the convention of:
+  <div class="opti">
+    <div>a) Conservatism</div>
+    <div>b) Materiality</div>
+    <div>c) Consistency</div>
+    <div>d) Full Disclosure</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">14.</td><td class="qb">
+  Closing stock is valued at cost price or market price, whichever is lower. This is an application of:
+  <div class="opti">
+    <div>a) Materiality</div>
+    <div>b) Conservatism</div>
+    <div>c) Full Disclosure</div>
+    <div>d) Consistency</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">15.</td><td class="qb">
+  Accounting Standards in India are issued by:
+  <div class="opti">
+    <div>a) SEBI</div>
+    <div>b) RBI</div>
+    <div>c) ICAI</div>
+    <div>d) Government of India</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+</table>
+
+<!-- ===== SECTION B ===== -->
+<div class="sec">SECTION — B (2 &times; 10 = 20 Marks)</div>
+
+<table class="q">
+<tr><td class="qn">16.</td><td class="qb">
+  Fill in the blanks:
+  <div class="sub">
+    <div>(i) Keeping systematic record of business transactions is known as <span class="fb"></span>.</div>
+    <div>(ii) The next step after classification of recorded transactions is <span class="fb"></span>.</div>
+    <div>(iii) The Italian who wrote the first authentic book on double entry book-keeping is <span class="fb"></span>.</div>
+    <div>(iv) Accounting begins where <span class="fb"></span> ends.</div>
+  </div>
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">17.</td><td class="qb">
+  State whether the following items are Goods or Assets for a furniture dealer named Makhan Singh:
+  <div class="sub">
+    <div>(i) Furniture purchased by Makhan Singh for sale</div>
+    <div>(ii) Machine purchased by a workshop for manufacturing</div>
+    <div>(iii) Machine manufactured by a firm for sale</div>
+    <div>(iv) Computer purchased by Makhan Singh for office use</div>
+  </div>
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">18.</td><td class="qb">
+  Distinguish between Trade Discount and Cash Discount. (Any two points)
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">19.</td><td class="qb">
+  Explain the Accounting Period Concept. What is the difference between a Calendar Year and a Financial Year in India?
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">20.</td><td class="qb">
+  What is the Accrual Concept? How is it different from the cash basis of accounting?
+  <div class="or">OR</div>
+  What is the Realisation Concept? When is revenue considered to be realised?
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">21.</td><td class="qb">
+  Put a tick (&check;) against items that should be recorded in books of accounts and a cross (&cross;) against those that should not (as per Money Measurement Concept):
+  <div class="sub">
+    <div>(i) Health of the managing director</div>
+    <div>(ii) Purchase of factory building for &#8377;10 crore</div>
+    <div>(iii) Rent paid &#8377;1,00,000</div>
+    <div>(iv) Goods worth &#8377;10,000 given as charity</div>
+    <div>(v) Delay in supply of raw materials</div>
+  </div>
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">22.</td><td class="qb">
+  Explain the convention of Consistency. Name its three types (Vertical, Horizontal, Dimensional).
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">23.</td><td class="qb">
+  What is the convention of Full Disclosure? Why is it important for investors and creditors?
+  <div class="or">OR</div>
+  Explain the convention of Materiality with an example. State two points of its significance.
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">24.</td><td class="qb">
+  Write the two aspects (dual effect) of the following transactions:
+  <div class="sub">
+    <div>(i) Owner brings &#8377;1,00,000 cash into business</div>
+    <div>(ii) Goods purchased for cash &#8377;40,000</div>
+    <div>(iii) Salaries paid &#8377;5,000 in cash</div>
+    <div>(iv) Purchased machine from Rama on credit &#8377;50,000</div>
+  </div>
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">25.</td><td class="qb">
+  Define the following accounting terms with one example each:
+  <div class="sub">
+    <div>(i) Drawings</div>
+    <div>(ii) Revenue Expenditure</div>
+    <div>(iii) Capital Expenditure</div>
+    <div>(iv) Sundry Debtors</div>
+  </div>
+</td><td class="qm">(2)</td></tr>
+</table>
+
+<!-- ===== SECTION C ===== -->
+<div class="page-break"></div>
+<div class="sec">SECTION — C (3 &times; 5 = 15 Marks)</div>
+
+<table class="q">
+<tr><td class="qn">26.</td><td class="qb">
+  Distinguish between Book-keeping and Accounting on the basis of: (i) Nature, (ii) Objective, (iii) Function, (iv) Level of Knowledge required, (v) Scope.
+</td><td class="qm">(3)</td></tr>
+
+<tr><td class="qn">27.</td><td class="qb">
+  "Accounting is called the Language of Business and serves as an Information System." Explain this statement. List any three internal users and three external users of accounting information with what each user wants to know.
+</td><td class="qm">(3)</td></tr>
+
+<tr><td class="qn">28.</td><td class="qb">
+  Explain the following accounting concepts with one example and one point of significance for each:
+  <div class="sub">
+    <div>(i) Business Entity Concept</div>
+    <div>(ii) Going Concern Concept</div>
+    <div>(iii) Cost Concept</div>
+  </div>
+  <div class="or">OR</div>
+  Explain with examples:
+  <div class="sub">
+    <div>(i) Money Measurement Concept (with one limitation)</div>
+    <div>(ii) Dual Aspect Concept (with the accounting equation)</div>
+    <div>(iii) Matching Concept (with significance)</div>
+  </div>
+</td><td class="qm">(3)</td></tr>
+
+<tr><td class="qn">29.</td><td class="qb">
+  Differentiate between Accounting Concepts and Accounting Conventions. Explain any three conventions — Consistency, Full Disclosure, and Conservatism — with suitable examples.
+</td><td class="qm">(3)</td></tr>
+
+<tr><td class="qn">30.</td><td class="qb">
+  State any five advantages and any three limitations of accounting as given in the NIOS textbook.
+</td><td class="qm">(3)</td></tr>
+</table>
+
+<!-- ===== SECTION D ===== -->
+<div class="sec">SECTION — D (2 &times; 5 = 10 Marks)</div>
+
+<table class="q">
+<tr><td class="qn">31.</td><td class="qb">
+  Mr. Sahoo started a business investing &#8377;1,00,000. He purchased goods for &#8377;40,000, furniture for &#8377;20,000, and plant &amp; machinery for &#8377;30,000. &#8377;10,000 remains as cash. He then takes &#8377;5,000 cash for domestic use.
+  <div class="sub">
+    <div>(i) What is the capital of the business? Which concept applies?</div>
+    <div>(ii) What is the withdrawal of &#8377;5,000 called? Why is it not a business expense?</div>
+  </div>
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">32.</td><td class="qb">
+  A firm sells goods for &#8377;55,000 on 25th March 2014. Payment is received on 10th April 2014. The firm also received goods costing &#8377;20,000 on 29th March 2014 but paid for them on 2nd April 2014.
+  <div class="sub">
+    <div>(i) In which year's revenue will &#8377;55,000 be included? Name the concept applied and give the reason.</div>
+    <div>(ii) In which year's expense will &#8377;20,000 be included? Name the concept applied and give the reason.</div>
+  </div>
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">33.</td><td class="qb">
+  From the following transactions of December 2006, calculate the total Revenue and total Expenses using the Matching Concept. Find the Profit or Loss.
+  <div class="sub">
+    <div>(i) Sale: Cash &#8377;2,000 and Credit &#8377;1,000</div>
+    <div>(ii) Salaries paid &#8377;350</div>
+    <div>(iii) Commission paid &#8377;150</div>
+    <div>(iv) Interest received &#8377;50</div>
+    <div>(v) Rent received &#8377;140 (of which &#8377;40 is for 2007)</div>
+    <div>(vi) Rent paid &#8377;200 (of which &#8377;50 belongs to 2005)</div>
+    <div>(vii) Goods purchased: Cash &#8377;1,500 and Credit &#8377;500</div>
+    <div>(viii) Depreciation on machine &#8377;200</div>
+  </div>
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">34.</td><td class="qb">
+  A business has unsold stock at end of year. Cost price is &#8377;2,00,000 and market price is &#8377;2,50,000.
+  <div class="sub">
+    <div>(i) At which price should the unsold stock be recorded? Name the convention applied.</div>
+    <div>(ii) If the market price were &#8377;1,80,000 instead, at which price would it be recorded and why?</div>
+  </div>
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">35.</td><td class="qb">
+  Identify which accounting concept or convention is being applied in each of the following situations:
+  <div class="sub">
+    <div>(i) A company uses the straight-line method of depreciation every year and does not change it.</div>
+    <div>(ii) Owner's personal car expenses are not recorded in the business books.</div>
+    <div>(iii) A business records salary expense of &#8377;50,000 for March even though it will be paid in April.</div>
+    <div>(iv) A company discloses the method of stock valuation in its financial statements.</div>
+    <div>(v) Fixed assets are recorded at purchase price plus all incidental charges, not at current market value.</div>
+  </div>
+</td><td class="qm">(2)</td></tr>
+</table>
+
+<div class="end">* * * * *</div>
+
+</div>
 </body>
 </html>
