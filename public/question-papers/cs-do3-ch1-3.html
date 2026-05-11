@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Computer Science (330) — Day Order 3</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Times New Roman', Times, serif; font-size: 12.5px; line-height: 1.45; color: #000; }
+  .page { width: 210mm; margin: 0 auto; padding: 16mm; }
+  @media print { .page { padding: 0; width: 100%; } }
+  .header { text-align: center; margin-bottom: 10px; }
+  .header h1 { font-size: 17px; font-weight: bold; margin-bottom: 2px; }
+  .header h2 { font-size: 14px; font-weight: bold; margin-bottom: 6px; }
+  .header .sub { font-size: 11px; color: #333; }
+  .meta { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: bold; border-top: 1.5px solid #000; border-bottom: 1.5px solid #000; padding: 5px 0; margin-bottom: 12px; }
+  .note-box { border: 1px solid #000; padding: 8px 12px; margin-bottom: 14px; font-size: 11.5px; }
+  .note-box .nt { font-weight: bold; text-align: center; margin-bottom: 4px; }
+  .note-box ol { padding-left: 18px; } .note-box li { margin-bottom: 1px; }
+  .sec { text-align: center; font-weight: bold; font-size: 13px; text-decoration: underline; margin: 14px 0 8px; letter-spacing: 1px; }
+  table.q { width: 100%; border-collapse: collapse; margin-bottom: 4px; }
+  table.q td { vertical-align: top; padding: 5px 4px; border: 1px solid #999; font-size: 12.5px; }
+  .qn { width: 28px; text-align: center; font-weight: bold; }
+  .qm { width: 32px; text-align: center; font-weight: bold; }
+  .qb { padding: 5px 7px !important; }
+  .opts { padding-left: 22px; margin-top: 3px; }
+  .opts div { margin-bottom: 0; }
+  .opti { display: flex; gap: 20px; padding-left: 22px; margin-top: 3px; flex-wrap: wrap; }
+  .sub { padding-left: 18px; margin-top: 3px; }
+  .sub div { margin-bottom: 2px; }
+  .or { text-align: center; font-weight: bold; font-size: 11px; margin: 3px 0; }
+  .fb { border-bottom: 1px solid #000; display: inline-block; width: 70px; }
+  .end { text-align: center; margin-top: 18px; font-weight: bold; font-size: 13px; letter-spacing: 2px; }
+  .page-break { page-break-before: always; }
+  table.truth { border-collapse: collapse; margin: 6px 0 4px 22px; }
+  table.truth td, table.truth th { border: 1px solid #000; padding: 3px 10px; text-align: center; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+  <h1>Question Paper</h1>
+  <h2>Computer Science (330) — Day Order 3</h2>
+  <div class="sub">Ch 1: Computer Fundamentals &nbsp;&bull;&nbsp; Ch 2: Binary Logic &nbsp;&bull;&nbsp; Ch 3: Computer Software</div>
+</div>
+
+<div class="meta">
+  <span>Time: 2 Hours</span>
+  <span>Mode: Open Book</span>
+  <span>Maximum Marks: 60</span>
+</div>
+
+<div class="note-box">
+  <div class="nt">Note:</div>
+  <ol type="i">
+    <li>This question paper consists of <b>35 questions</b> in all.</li>
+    <li>All questions are compulsory. Internal choices are given wherever required.</li>
+    <li><b>Section A:</b> Q.1 to Q.15 — Multiple Choice / Objective (1 mark each = 15 marks)</li>
+    <li><b>Section B:</b> Q.16 to Q.25 — Short Answer / Fill in Blanks (2 marks each = 20 marks)</li>
+    <li><b>Section C:</b> Q.26 to Q.30 — Descriptive (3 marks each = 15 marks)</li>
+    <li><b>Section D:</b> Q.31 to Q.35 — Numerical / Practical (2 marks each = 10 marks)</li>
+  </ol>
+</div>
+
+<!-- ===== SECTION A ===== -->
+<div class="sec">SECTION — A (1 &times; 15 = 15 Marks)</div>
+
+<table class="q">
+<tr><td class="qn">1.</td><td class="qb">
+  Which of the following is NOT a characteristic of a computer?
+  <div class="opti">
+    <div>a) Speed</div>
+    <div>b) Accuracy</div>
+    <div>c) Intelligence</div>
+    <div>d) Diligence</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">2.</td><td class="qb">
+  The first generation of computers used which technology?
+  <div class="opti">
+    <div>a) Transistors</div>
+    <div>b) Vacuum Tubes</div>
+    <div>c) Integrated Circuits</div>
+    <div>d) Microprocessors</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">3.</td><td class="qb">
+  Which part of the CPU performs arithmetic and logical operations?
+  <div class="opti">
+    <div>a) Control Unit</div>
+    <div>b) ALU</div>
+    <div>c) Registers</div>
+    <div>d) Memory</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">4.</td><td class="qb">
+  RAM is a type of:
+  <div class="opti">
+    <div>a) Secondary memory</div>
+    <div>b) Non-volatile memory</div>
+    <div>c) Primary volatile memory</div>
+    <div>d) Output device</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">5.</td><td class="qb">
+  The binary number system has a base (radix) of:
+  <div class="opti">
+    <div>a) 2</div>
+    <div>b) 8</div>
+    <div>c) 10</div>
+    <div>d) 16</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">6.</td><td class="qb">
+  The hexadecimal equivalent of the decimal number 15 is:
+  <div class="opti">
+    <div>a) E</div>
+    <div>b) F</div>
+    <div>c) 10</div>
+    <div>d) 1F</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">7.</td><td class="qb">
+  Which logic gate gives output 1 only when both inputs are 1?
+  <div class="opti">
+    <div>a) OR</div>
+    <div>b) AND</div>
+    <div>c) NOT</div>
+    <div>d) NOR</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">8.</td><td class="qb">
+  The NOT gate is also called:
+  <div class="opti">
+    <div>a) Universal gate</div>
+    <div>b) Inverter</div>
+    <div>c) Comparator</div>
+    <div>d) Buffer</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">9.</td><td class="qb">
+  Which of the following is system software?
+  <div class="opti">
+    <div>a) MS Word</div>
+    <div>b) Tally</div>
+    <div>c) Operating System</div>
+    <div>d) Photoshop</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">10.</td><td class="qb">
+  A compiler translates:
+  <div class="opti">
+    <div>a) One instruction at a time</div>
+    <div>b) The entire program at once</div>
+    <div>c) Machine code to high-level language</div>
+    <div>d) Assembly code to machine code</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">11.</td><td class="qb">
+  Which of the following is an input device?
+  <div class="opti">
+    <div>a) Monitor</div>
+    <div>b) Printer</div>
+    <div>c) Scanner</div>
+    <div>d) Speaker</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">12.</td><td class="qb">
+  NAND gate is called a universal gate because:
+  <div class="opts">
+    <div>a) It is the most commonly used gate</div>
+    <div>b) Any logic gate can be constructed using only NAND gates</div>
+    <div>c) It has only one input</div>
+    <div>d) It is the fastest gate</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">13.</td><td class="qb">
+  An assembler converts:
+  <div class="opti">
+    <div>a) High-level language to machine code</div>
+    <div>b) Assembly language to machine code</div>
+    <div>c) Machine code to assembly language</div>
+    <div>d) English to programming language</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">14.</td><td class="qb">
+  Which type of computer is used for weather forecasting and scientific simulations?
+  <div class="opti">
+    <div>a) Microcomputer</div>
+    <div>b) Minicomputer</div>
+    <div>c) Mainframe</div>
+    <div>d) Supercomputer</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+
+<tr><td class="qn">15.</td><td class="qb">
+  Linux is an example of:
+  <div class="opti">
+    <div>a) Proprietary software</div>
+    <div>b) Application software</div>
+    <div>c) Open source operating system</div>
+    <div>d) Utility software</div>
+  </div>
+</td><td class="qm">(1)</td></tr>
+</table>
+
+<!-- ===== SECTION B ===== -->
+<div class="sec">SECTION — B (2 &times; 10 = 20 Marks)</div>
+
+<table class="q">
+<tr><td class="qn">16.</td><td class="qb">
+  Fill in the blanks:
+  <div class="sub">
+    <div>(i) The full form of ALU is <span class="fb"></span>.</div>
+    <div>(ii) The octal number system has a base of <span class="fb"></span>.</div>
+    <div>(iii) ROM stands for <span class="fb"></span>.</div>
+    <div>(iv) A program that translates one statement at a time from high-level language to machine code is called an <span class="fb"></span>.</div>
+  </div>
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">17.</td><td class="qb">
+  State any four characteristics of a computer. Explain any one of them briefly.
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">18.</td><td class="qb">
+  Differentiate between RAM and ROM. (Any two points)
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">19.</td><td class="qb">
+  What is the difference between primary memory and secondary memory? Give one example of each.
+  <div class="or">OR</div>
+  What is a register? Name any two types of registers found in a CPU.
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">20.</td><td class="qb">
+  Convert the following:
+  <div class="sub">
+    <div>(i) (27)<sub>10</sub> = ( ? )<sub>8</sub></div>
+    <div>(ii) (1A)<sub>16</sub> = ( ? )<sub>10</sub></div>
+  </div>
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">21.</td><td class="qb">
+  Differentiate between AND gate and OR gate. Write the truth table for each.
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">22.</td><td class="qb">
+  Distinguish between system software and application software. Give two examples of each.
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">23.</td><td class="qb">
+  What is an operating system? State any three functions of an operating system.
+  <div class="or">OR</div>
+  What is utility software? Give two examples and state its purpose.
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">24.</td><td class="qb">
+  Differentiate between compiler and interpreter. (Any two points)
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">25.</td><td class="qb">
+  What is meant by open source software? How does it differ from proprietary software? Give one example of each.
+</td><td class="qm">(2)</td></tr>
+</table>
+
+<!-- ===== SECTION C ===== -->
+<div class="page-break"></div>
+<div class="sec">SECTION — C (3 &times; 5 = 15 Marks)</div>
+
+<table class="q">
+<tr><td class="qn">26.</td><td class="qb">
+  Describe the five generations of computers. Mention the key technology used and one characteristic feature of each generation.
+</td><td class="qm">(3)</td></tr>
+
+<tr><td class="qn">27.</td><td class="qb">
+  Draw and explain the block diagram of a computer system. Label all major components — Input Unit, CPU (ALU, CU, Registers), Memory Unit, and Output Unit — and describe the flow of data between them.
+</td><td class="qm">(3)</td></tr>
+
+<tr><td class="qn">28.</td><td class="qb">
+  Explain the following number systems with their base, digits used, and one example conversion to decimal:
+  <div class="sub">
+    <div>(i) Binary Number System</div>
+    <div>(ii) Octal Number System</div>
+    <div>(iii) Hexadecimal Number System</div>
+  </div>
+  <div class="or">OR</div>
+  Explain any three logic gates (AND, OR, NOT) with their symbols, Boolean expressions, and truth tables.
+</td><td class="qm">(3)</td></tr>
+
+<tr><td class="qn">29.</td><td class="qb">
+  Differentiate between machine language, assembly language, and high-level language. State two advantages and two disadvantages of high-level languages.
+</td><td class="qm">(3)</td></tr>
+
+<tr><td class="qn">30.</td><td class="qb">
+  Classify computers on the basis of size and capability. Explain the features and uses of: (i) Microcomputer, (ii) Minicomputer, (iii) Mainframe computer, (iv) Supercomputer.
+</td><td class="qm">(3)</td></tr>
+</table>
+
+<!-- ===== SECTION D ===== -->
+<div class="sec">SECTION — D (2 &times; 5 = 10 Marks)</div>
+
+<table class="q">
+<tr><td class="qn">31.</td><td class="qb">
+  Convert the decimal number <b>45</b> into its binary equivalent. Show all steps of the conversion using the successive division method.
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">32.</td><td class="qb">
+  Convert the binary number <b>(11011001)<sub>2</sub></b> into its decimal equivalent. Show the positional value calculation for each bit.
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">33.</td><td class="qb">
+  Perform the following binary addition. Show all carry-over steps clearly.
+  <div class="sub">
+    <div style="font-family: monospace; font-size: 13px; margin-top: 4px;">
+      &nbsp;&nbsp;1 0 1 1 0 1<br>
+      + 1 1 0 1 1 1<br>
+      ___________
+    </div>
+  </div>
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">34.</td><td class="qb">
+  Complete the truth table for the Boolean expression: <b>Y = A AND (B OR C)</b>
+  <table class="truth">
+    <tr><th>A</th><th>B</th><th>C</th><th>B OR C</th><th>Y = A AND (B OR C)</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td><td></td><td></td></tr>
+    <tr><td>0</td><td>0</td><td>1</td><td></td><td></td></tr>
+    <tr><td>0</td><td>1</td><td>0</td><td></td><td></td></tr>
+    <tr><td>0</td><td>1</td><td>1</td><td></td><td></td></tr>
+    <tr><td>1</td><td>0</td><td>0</td><td></td><td></td></tr>
+    <tr><td>1</td><td>0</td><td>1</td><td></td><td></td></tr>
+    <tr><td>1</td><td>1</td><td>0</td><td></td><td></td></tr>
+    <tr><td>1</td><td>1</td><td>1</td><td></td><td></td></tr>
+  </table>
+</td><td class="qm">(2)</td></tr>
+
+<tr><td class="qn">35.</td><td class="qb">
+  From the following list, classify each item as an <b>Input Device</b> or an <b>Output Device</b>:
+  <div class="sub">
+    <div>(i) Keyboard</div>
+    <div>(ii) Monitor</div>
+    <div>(iii) Mouse</div>
+    <div>(iv) Printer</div>
+    <div>(v) Scanner</div>
+    <div>(vi) Speaker</div>
+    <div>(vii) Joystick</div>
+    <div>(viii) Projector</div>
+  </div>
+</td><td class="qm">(2)</td></tr>
+</table>
+
+<div class="end">* * * * *</div>
+
+</div>
+</body>
+</html>
