@@ -104,10 +104,10 @@ import { CountdownPipe } from '../../shared/pipes/countdown.pipe';
             <i class="mdi mdi-handshake text-xl text-sales"></i>
             <div>
               <h3 class="font-semibold text-sales">Sales Block</h3>
-              <p class="text-xs text-gray-500">1:30 PM — 4:00 PM (2.5 hrs)</p>
+              <p class="text-xs text-gray-500">1:30 PM — 3:45 PM (2.25 hrs)</p>
             </div>
             <div class="ml-auto flex items-center gap-1.5 rounded-full bg-green-100 px-2.5 py-1 text-xs font-medium text-green-700">
-              <i class="mdi mdi-clock-outline text-sm"></i> 1:30 — 4:00
+              <i class="mdi mdi-clock-outline text-sm"></i> 1:30 — 3:45
             </div>
           </div>
           <div class="p-4">
@@ -122,7 +122,7 @@ import { CountdownPipe } from '../../shared/pipes/countdown.pipe';
       @if (salesTasks().length > 0 && codingTasks().length > 0) {
         <div class="mb-5 flex items-center gap-3 px-4 text-xs text-gray-400">
           <div class="flex-1 border-t border-dashed border-gray-300"></div>
-          <span><i class="mdi mdi-coffee"></i> Break &middot; 4:00 — 4:15 PM</span>
+          <span><i class="mdi mdi-coffee"></i> Break &middot; 3:45 — 4:30 PM</span>
           <div class="flex-1 border-t border-dashed border-gray-300"></div>
         </div>
       }
@@ -134,10 +134,10 @@ import { CountdownPipe } from '../../shared/pipes/countdown.pipe';
             <i class="mdi mdi-code-tags text-xl text-coding"></i>
             <div>
               <h3 class="font-semibold text-coding">Coding Block</h3>
-              <p class="text-xs text-gray-500">4:15 PM — 7:00 PM (2.75 hrs)</p>
+              <p class="text-xs text-gray-500">4:30 PM — 7:00 PM (2.5 hrs)</p>
             </div>
             <div class="ml-auto flex items-center gap-1.5 rounded-full bg-purple-100 px-2.5 py-1 text-xs font-medium text-purple-700">
-              <i class="mdi mdi-clock-outline text-sm"></i> 4:15 — 7:00
+              <i class="mdi mdi-clock-outline text-sm"></i> 4:30 — 7:00
             </div>
           </div>
           <div class="p-4">
