@@ -13,11 +13,11 @@ import { ColorLegendComponent } from '../../shared/components/color-legend/color
   template: `
     <div class="mx-auto max-w-4xl">
       <div class="mb-4 flex items-center justify-center gap-4">
-        <button class="rounded-lg p-2 hover:bg-gray-100" (click)="prevMonth()">
+        <button class="rounded-lg p-2 hover:bg-white/10" (click)="prevMonth()">
           <i class="mdi mdi-chevron-left text-2xl"></i>
         </button>
         <h2 class="min-w-[200px] text-center text-xl font-bold">{{ monthNames[currentMonth()] }} {{ currentYear() }}</h2>
-        <button class="rounded-lg p-2 hover:bg-gray-100" (click)="nextMonth()">
+        <button class="rounded-lg p-2 hover:bg-white/10" (click)="nextMonth()">
           <i class="mdi mdi-chevron-right text-2xl"></i>
         </button>
       </div>
