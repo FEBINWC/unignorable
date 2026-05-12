@@ -1,11 +1,13 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
 # Compiled output
-tracker-app/dist
-tracker-app/tmp
-tracker-app/out-tsc
-tracker-app/bazel-out
+/dist
+/tmp
+/out-tsc
+/bazel-out
 
 # Node
-node_modules/
+/node_modules
 npm-debug.log
 yarn-error.log
 
@@ -27,7 +29,7 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-tracker-app/.angular/cache
+/.angular/cache
 .sass-cache/
 /connect.lock
 /coverage
@@ -38,6 +40,3 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
-
-# Firebase
-firebase-debug.log
