@@ -51,7 +51,7 @@ export class PaceService implements OnDestroy {
     const progress: Progress = progressSnap.val() || {
       currentDayOrder: 1,
       targetEndDate: '2027-03-15',
-      startDate: '2026-05-11',
+      startDate: '2026-05-12',
       totalDayOrders: 240,
     };
 

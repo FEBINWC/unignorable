@@ -125,19 +125,19 @@ import { ScheduleService } from '../../core/services/schedule.service';
                     <option value="full">Full</option><option value="light">Light</option><option value="cumulative">Cumulative</option>
                   </select>
                 </div>
-                @for (task of getTasksArray(do_); track $index) {
+                @for (task of editTasks; track $index) {
                   <div class="flex gap-2 rounded p-2"
                     [class]="task.type === 'exam' ? 'bg-primary/10' : task.type === 'sales' ? 'bg-success/10' : 'bg-coding/10'">
                     <span class="flex w-16 items-center justify-center rounded-full text-[10px] font-bold uppercase"
                       [class]="task.type === 'exam' ? 'bg-blue-200 text-blue-800' : task.type === 'sales' ? 'bg-green-200 text-green-800' : 'bg-purple-200 text-purple-800'">
                       {{ task.type }}
                     </span>
-                    <input type="text" [(ngModel)]="task.title" placeholder="Title" class="flex-1 rounded border px-2 py-1 text-xs" />
-                    <input type="text" [(ngModel)]="task.description" placeholder="Description" class="flex-[2] rounded border px-2 py-1 text-xs" />
+                    <input type="text" [(ngModel)]="task.title" placeholder="Title" class="flex-1 rounded border border-gray-600 bg-transparent px-2 py-1 text-xs" />
+                    <input type="text" [(ngModel)]="task.description" placeholder="Description" class="flex-[2] rounded border border-gray-600 bg-transparent px-2 py-1 text-xs" />
                     @if (task.type === 'exam') {
-                      <input type="text" [(ngModel)]="task.subject" placeholder="Subject" class="w-28 rounded border px-2 py-1 text-xs" />
-                      <input type="text" [(ngModel)]="task.chapters" placeholder="Chapters" class="w-32 rounded border px-2 py-1 text-xs" />
-                      <select [(ngModel)]="task.examType" class="rounded border px-2 py-1 text-xs">
+                      <input type="text" [(ngModel)]="task.subject" placeholder="Subject" class="w-28 rounded border border-gray-600 bg-transparent px-2 py-1 text-xs" />
+                      <input type="text" [(ngModel)]="task.chapters" placeholder="Chapters" class="w-32 rounded border border-gray-600 bg-transparent px-2 py-1 text-xs" />
+                      <select [(ngModel)]="task.examType" class="rounded border border-gray-600 bg-transparent px-2 py-1 text-xs">
                         <option value="open-book">Open</option><option value="closed-book">Closed</option>
                         <option value="cumulative">Cumulative</option><option value="mock">Mock</option>
                       </select>
@@ -210,6 +210,7 @@ export class ManageDayOrdersComponent implements OnInit {
   // Edit fields
   editPhase = 1;
   editDayType = 'full';
+  editTasks: Task[] = [];
 
   // Add fields
   newPosition = 1;
@@ -273,10 +274,11 @@ export class ManageDayOrdersComponent implements OnInit {
     this.editingOrder.set(dayOrder.dayOrder);
     this.editPhase = dayOrder.phase;
     this.editDayType = dayOrder.dayType;
+    this.editTasks = this.getTasksArray(dayOrder);
   }
 
   async saveEdit(dayOrder: DayOrder): Promise<void> {
-    const tasks = this.getTasksArray(dayOrder);
+    const tasks = this.editTasks;
     const taskMap: Record<string, any> = {};
     tasks.forEach((t) => {
       const { id, ...rest } = t;
